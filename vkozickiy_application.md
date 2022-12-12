@@ -1,3 +1,4 @@
+<h1>Вячеслав Козицкий - "HowToMine.ru"</h1>
 <h3>Группа 10И4</h3>
 <h3>Электронная почта: vyacheslav.kozickij@gmail.com</h3>
 <h3>VK: https://vk.com/vkozickiy</h3>
