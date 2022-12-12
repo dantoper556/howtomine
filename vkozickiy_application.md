@@ -51,7 +51,7 @@
 <h4>[ ИНСТРУМЕНТЫ РАЗРАБОТКИ, ИНФОРМАЦИЯ О БД ]</h4>
 <ol>
   <li> HTML, CSS/Bootstrap - верстка страницы </li>
-  <li> Python, Django Framework - бэкэнд </li>
+  <li> Python, Django Framework - бэкэнд и парсер </li>
   <li> MySQL - базы данных </li>
 </ol>
 
