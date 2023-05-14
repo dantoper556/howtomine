@@ -77,3 +77,11 @@ body {
     padding-left: 10%;
     padding-right: 10%;
 }
+
+#back_btn {
+    width: 10%;
+    display: block;
+    height: 15vw;
+    margin: 10px;
+    padding: 20px;
+}
