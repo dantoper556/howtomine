@@ -17,9 +17,10 @@ from django.contrib import admin
 from django.urls import path
 import sys
 sys.path.append("..")
-from main.views import main_page
+from main.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', main_page),
+    path('builder/', make_conf_page)
 ]

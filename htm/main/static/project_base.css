@@ -39,7 +39,7 @@ body {
     display: block;
 } */
 
-.mp_cont1 {
+.mp_a {
     /* text settings */
     color: white;
     text-align: center;
@@ -63,7 +63,7 @@ body {
     transition: .5s;
 }
 
-.mp_cont1:hover {
+.mp_a:hover {
     /* text settings */
     color: #073b4c;
     background-color: #cccccc;
