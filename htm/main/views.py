@@ -6,3 +6,6 @@ def main_page(request):
 
 def make_conf_page(request):
     return render(request, 'make_conf_page.html')
+
+def calc_profit_page(request):
+    return render(request, 'calc_profit_page.html')

@@ -22,5 +22,6 @@ from main.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', main_page),
-    path('builder/', make_conf_page)
+    path('builder/', make_conf_page),
+    path('calc/', calc_profit_page),
 ]

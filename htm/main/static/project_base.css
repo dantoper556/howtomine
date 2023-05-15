@@ -50,19 +50,18 @@ body {
 
     /* block style settings */
     /* box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7); */
-    border-radius: 10px;
-
-    transition: .5s;
 }
 
 .a1 {
     /* color scheme */
+    border-radius: 10px;
     background-color: #333333;
 
     /* text settings */
     color: white;
     text-align: center;
     text-decoration: none;
+    transition: .5s;
 }
 
 .a1:hover {
@@ -89,13 +88,3 @@ body {
     margin-left: 3vw;
     /* background-color: #333333; */
 }
-
-/* #back_btn:hover {
-    /* text settings 
-    color: #073b4c;
-    background-color: #cccccc;
-    /* block style settings */
-    /* box-shadow: 0px 0px 5px rgba(255, 255, 255, 0.5);
-    
-    transition: .5s;
-} */
