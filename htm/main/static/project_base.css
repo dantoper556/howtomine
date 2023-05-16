@@ -88,3 +88,34 @@ body {
     margin-left: 3vw;
     /* background-color: #333333; */
 }
+
+button {
+    text-align: center;
+    vertical-align: middle;
+}
+
+#del_card_btn {
+    background-color: transparent;
+    border: none;
+    color: red;
+}
+
+select, option {
+    padding: 10px;
+    width: 40%;
+    background-color: #333333;
+    border-radius: 10px;
+    color: white;
+    border: none;
+    transition: 0.5s;
+}
+
+option:hover {
+    color: #073b4c;
+    background-color: #cccccc;
+    transition: 0.5s;
+}
+
+.form {
+    margin-bottom: 10px;
+}

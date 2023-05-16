@@ -23,6 +23,8 @@
             var inp = document.querySelector("input[name='form-0-cnt']");
             // alert(inp.name);
             inp.value = "{{cnt}}";
+            var v1 = document.querySelector("select[name='form-0-cards']");
+            v1.value = "1";
         }
 
         var cnt = 0;
@@ -46,19 +48,15 @@
             {% csrf_token %}
             <!-- <input class="cnt" type="integer" value="1"> -->
             {% for el in forms %}
-                {{el.as_p}}
+                <div class="form">
+                    <button type="submit" name="del {{forloop.counter}}" id="del_card_btn">✕</button>
+                    {{el}}
+                    <br>
+                </div>
+                
             {% endfor %}
             <button name="inc" type="submit" onclick="inc()">++</button>
             <button name="sbm" type="submit">go</button>
-        </form>
-
-        <button onclick="create()">
-            Добавить карту
-        </button>
-        
-        {% if was == 1 %}
-            <p>Вы выбрали карту {{ chosen_card.name }}. Кодовое имя для парсера: {{chosen_card.hashrate_no_code}} </p> 
-        {% endif %}
-        
+        </form>        
     </div>
 </body>

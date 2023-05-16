@@ -38,7 +38,14 @@ def calc_profit_page(request):
             #         return render(request, 'calc_profit_page.html', context=data)
             #     # return HttpResponse(t1.cleaned_data["cnt"])
             # return HttpResponse("not ok")
+        elif (sum([el.count("del") for el in request.POST.keys()]) > 0):
+            print([el for el in request.POST.keys()])
+            if (int(request.POST['form-0-cnt']) > 1):
+                data["cnt"] = int(request.POST['form-0-cnt']) - 1
+                print(data["cnt"])
+                data["forms"].extra = data["cnt"]
+                return render(request, 'calc_profit_page.html', context=data)
         else:
-            return HttpResponse("ok2")
+            return HttpResponse("not ok")
         # return render(request, 'calc_profit_page.html', context={"cards": ['testik']})
     return render(request, 'calc_profit_page.html', context=data)
