@@ -4,8 +4,31 @@
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
     <link rel="stylesheet", href="{% static 'project_base.css' %}">
+
+    <script>
+        function create() {
+            var par = document.querySelector("form.forms");
+            var add = document.createElement("h2");
+            add.appendChild(document.createTextNode("testik"));
+            par.appendChild(add);
+        }
+        
+        function inc() {
+            var inp = document.querySelector("input[name='cnt']");
+            el.value = parseInt(el.value) + 1;
+            // alert(el.value);
+        }
+
+        function t1() {
+            var inp = document.querySelector("input[name='form-0-cnt']");
+            // alert(inp.name);
+            inp.value = "{{cnt}}";
+        }
+
+        var cnt = 0;
+    </script>
 </head>
-<body>
+<body onload="t1()">
     <a class="a1" id="back_btn" href="/">Назад</a>
     <h1 id="mp_header">Расчет доходности вашей конфигурации</h1>
     <div>
@@ -19,11 +42,19 @@
             </select>
             <button type="submit">b</button>
         </form> -->
-        <form method="POST">
+        <form class="forms" method="POST">
             {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">go</button>
+            <!-- <input class="cnt" type="integer" value="1"> -->
+            {% for el in forms %}
+                {{el.as_p}}
+            {% endfor %}
+            <button name="inc" type="submit" onclick="inc()">++</button>
+            <button name="sbm" type="submit">go</button>
         </form>
+
+        <button onclick="create()">
+            Добавить карту
+        </button>
         
         {% if was == 1 %}
             <p>Вы выбрали карту {{ chosen_card.name }}. Кодовое имя для парсера: {{chosen_card.hashrate_no_code}} </p> 
