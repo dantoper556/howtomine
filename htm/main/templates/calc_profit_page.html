@@ -8,4 +8,26 @@
 <body>
     <a class="a1" id="back_btn" href="/">Назад</a>
     <h1 id="mp_header">Расчет доходности вашей конфигурации</h1>
+    <div>
+        <p>{{ cards }}</p>
+        <!-- <form method="POST">
+            {% csrf_token %}
+            <select name="card" id="">
+                {% for card in cards %}
+                    <option value="{{ card }}"> {{ card }} </option>
+                {% endfor %}
+            </select>
+            <button type="submit">b</button>
+        </form> -->
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">go</button>
+        </form>
+        
+        {% if was == 1 %}
+            <p>Вы выбрали карту {{ chosen_card.name }}. Кодовое имя для парсера: {{chosen_card.hashrate_no_code}} </p> 
+        {% endif %}
+        
+    </div>
 </body>
