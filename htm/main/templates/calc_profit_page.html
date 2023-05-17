@@ -68,6 +68,10 @@
             <br>
             <button name="sbm" type="submit">go</button>
         </form>
+
+        {% for name, quant in picked_cards.items %}
+            <p>{{name}}: {{quant}}</p>
+        {% endfor %}
         
         {% for type in form_vals %}
             <script>restore_types("{{forloop.counter}}", "{{type}}")</script>
