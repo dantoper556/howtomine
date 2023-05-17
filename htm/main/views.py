@@ -35,6 +35,37 @@ def calc_profit_page(request):
             t1 = bs(str(d1)).text
             return t1
             # print(t1)
+        
+        def parse_hashrate(self, req):
+            ind = int(self.get_query(req, "cards"))
+            quantity = int(self.get_query(req, "quantity"))
+            key = VideoCard.objects.all()[ind]
+            d = dict()
+            dailyr = dict()
+            for obj in CryptoCoin.objects.all():
+                url = f"https://www.hashrate.no/gpus/{key.hashrate_no_code}/{obj.hashrate_no_code}"
+                r = requests.get(url)
+                txt = bs(r.text)
+                d1 = txt.find_all("span", {"class", "description"})
+                t1 = str(bs(str(d1)).text)
+                # print(url)
+                if ("Mh/s" not in t1):
+                    pass
+                else:
+                    mt = t1.split(" Mh/s ")
+                    # print(float(mt[0].split(" ")[-1]), "Mh/s")
+                    d[obj.name] = float(mt[0].split(" ")[-1]) * quantity
+
+                    url = f"https://www.hashrate.no/coins/{obj.hashrate_no_code.lower()}"
+                    r = requests.get(url)
+                    txt = bs(r.text)
+                    d1 = txt.find_all("font", {"class", "gpu-info-text"})[2]
+                    t1 = str(bs(str(d1)).text).split()
+                    if (t1[1] == "K"): dailyr[obj.name] = float(t1[0]) * 1000
+                    elif (t1[1] == "T"): dailyr[obj.name] = float(t1[0]) * 1000000
+                    dailyr[obj.name] = d[obj.name] * 86400 / dailyr[obj.name]
+                    print(obj.name, t1)
+            return d, dailyr
 
     b = 0
     data = dict()
@@ -46,7 +77,11 @@ def calc_profit_page(request):
     data["forms"] = formset_factory(ChooseCardForm, extra=data["cnt"])
     data["form_vals"] = [0]
     data["form_quant"] = [1]
-    data["picked_cards"] = dict()
+    data["picked_cards"] = []
+    data["profit_mhs"] = dict()
+    data["profit_crypto"] = dict()
+    for el in CryptoCoin.objects.all(): data["profit_mhs"][el.name] = 0
+    for el in CryptoCoin.objects.all(): data["profit_crypto"][el.name] = 0
     
     if (request.method == "POST"):
         data["cnt"] = int(request.POST['form-0-cnt'])
@@ -71,24 +106,18 @@ def calc_profit_page(request):
             d = dict()
             for el in vcl: 
                 d[VideoCard.objects.all()[int(el.get_query(request.POST, "cards"))]] = el.test_parse(request.POST)
-            # for el in vcl:
-                # d[VideoCard.objects.all()[int(el.get_query(request.POST, "cards"))].name] += int(el.get_query(request.POST, "quantity"))
             
-            data["picked_cards"] = d
-
-            for key in data["picked_cards"].keys():
-                for obj in CryptoCoin.objects.all():
-                    url =f"https://www.hashrate.no/gpus/{key.hashrate_no_code}/{obj.hashrate_no_code}"
-                    r = requests.get(url)
-                    txt = bs(r.text)
-                    d1 = txt.find_all("span", {"class", "description"})
-                    t1 = str(bs(str(d1)).text)
-                    print(url)
-                    if ("Mh/s" not in t1):
-                        pass
-                    else:
-                        mt = t1.split(" Mh/s ")
-                        print(float(mt[0].split(" ")[-1]), "Mh/s")
+            data["picked_cards"] = []
+            for el in vcl:
+                r, k = el.parse_hashrate(request.POST)
+                # data["picked_cards"].append(k)
+                for key, val in r.items():
+                    data["profit_mhs"][key] += val
+                    data["profit_mhs"][key] = round(data["profit_mhs"][key], 2)
+                for key, val in k.items():
+                    data["profit_crypto"][key] += val
+                    data["profit_crypto"][key] = round(data["profit_crypto"][key], 2)
+            print(data["picked_cards"])
         
         data["forms"].extra = data["cnt"]
         tl, tq = [], []

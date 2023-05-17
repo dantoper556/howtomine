@@ -69,8 +69,13 @@
             <button name="sbm" type="submit">go</button>
         </form>
 
-        {% for name, quant in picked_cards.items %}
-            <p>{{name}}: {{quant}}</p>
+        {{picked_cards}}
+        {% for name, val in profit_mhs.items %}
+            <p>{{name}}: {{val}} Mh/s</p>
+        {% endfor %}
+        
+        {% for name, val in profit_crypto.items %}
+            <p>{{name}}: {{val}} {{name}}</p>
         {% endfor %}
         
         {% for type in form_vals %}
