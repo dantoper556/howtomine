@@ -119,3 +119,17 @@ option:hover {
 .form {
     margin-bottom: 10px;
 }
+
+.trans_btn {
+    margin: 10px;
+    margin-left: 2%;
+    border: none;
+    background-color: transparent;
+    color: white;
+    transition: .5s;
+}
+
+.trans_btn:hover {
+    color: lightgreen;
+    transition: .5s;
+}

@@ -19,13 +19,19 @@
             // alert(el.value);
         }
 
-        function t1() {
+        function on_page_init() {
             var inp = document.querySelector("input[name='form-0-cnt']");
             // alert(inp.name);
             inp.value = "{{cnt}}";
+
+            for (let i = 0; i < "{{cnt}}"; i++) {
+                var q = "input[name='form-" + String(i) +"-quantity']";
+                var v = document.querySelector(q);
+                if (v.value == "") v.value = "1";
+            }
         }
 
-        function t2(i, val) {
+        function restore_types(i, val) {
             // alert(i);
             var q = "select[name='form-" + String(parseInt(i) - 1) +"-cards']";
             var v = document.querySelector(q);
@@ -33,24 +39,19 @@
             // alert(i + " " + val + " " + q);
         }
 
-        var cnt = 0;
+        function restore_quantities(i, val) {
+            // alert(i);
+            var q = "input[name='form-" + String(parseInt(i) - 1) +"-quantity']";
+            var v = document.querySelector(q);
+            v.value = val;
+            // alert(i + " " + val + " " + q);
+        }
     </script>
 </head>
-<body onload="t1()">
+<body onload="on_page_init()">
     <a class="a1" id="back_btn" href="/">Назад</a>
     <h1 id="mp_header">Расчет доходности вашей конфигурации</h1>
     <div>
-        <p>{{ cards }}</p>
-        <!-- <form method="POST">
-            {% csrf_token %}
-            <select name="card" id="">
-                {% for card in cards %}
-                    <option value="{{ card }}"> {{ card }} </option>
-                {% endfor %}
-            </select>
-            <button type="submit">b</button>
-        </form> -->
-        {{form_vals}}
         <form class="forms" method="POST">
             {% csrf_token %}
             <!-- <input class="cnt" type="integer" value="1"> -->
@@ -62,12 +63,16 @@
                 </div>
                 
             {% endfor %}
-            <button name="inc" type="submit" onclick="inc()">++</button>
+            <button name="inc" type="submit" onclick="inc()" class="trans_btn">Добавить карту</button>
+            <br>
             <button name="sbm" type="submit">go</button>
         </form>
         
-        {% for el in form_vals %}
-            <script>t2("{{forloop.counter}}", "{{el}}")</script>
-        {% endfor %}    
+        {% for type in form_vals %}
+            <script>restore_types("{{forloop.counter}}", "{{type}}")</script>
+        {% endfor %}
+        {% for quant in form_quant %}
+            <script>restore_quantities("{{forloop.counter}}", "{{quant}}")</script>
+        {% endfor %}
     </div>
 </body>
