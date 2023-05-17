@@ -50,10 +50,10 @@
 
 <h4>[ ИНСТРУМЕНТЫ РАЗРАБОТКИ, ИНФОРМАЦИЯ О БД ]</h4>
 <ol>
-  <li> HTML, CSS/Bootstrap - верстка страницы </li>
+  <li> HTML, CSS/Bootstrap, JavaScript - верстка страницы </li>
   <li> Django Framework - бэкэнд </li>
   <li> BeautifulSoap, Requests - парсер магазинов </li>
-  <li> MySQL - базы данных </li>
+  <li> SQLite3 - базы данных </li>
 </ol>
 
 
