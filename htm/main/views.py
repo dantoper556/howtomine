@@ -59,6 +59,4 @@ def calc_profit_page(request):
             tq.append(el.get_query(request.POST, "quantity"))
         data["form_vals"] = tl
         data["form_quant"] = tq
-        print(tq)
-        print(*vcl)
     return render(request, 'calc_profit_page.html', context=data)
