@@ -22,30 +22,36 @@ def calc_profit_page(request):
     data["cnt"] = 1
     # data["forms"] = [ChooseCardForm()]
     data["forms"] = formset_factory(ChooseCardForm, extra=data["cnt"])
+    data["form_vals"] = [0]
     # if (request.method == "POST"):
     #     t1 = request.POST['form-0-cards']
     #     print(t1)
     if (request.method == "POST"):
+        data["cnt"] = int(request.POST['form-0-cnt'])
+        tl = []
+        sz = data["cnt"]
+        for i in range(sz):
+            tl.append(request.POST['form-'+str(i)+'-cards'])
+        # print(tl)
+        data["form_vals"] = tl
+
         if ("inc" in request.POST):
-            print(request.POST)
-            data["cnt"] = int(request.POST['form-0-cnt']) + 1
+            # print(request.POST)
+            data["cnt"] += 1
             data["forms"].extra = data["cnt"]
-            # t1 = ChooseCardForm(request.POST)
-            # if (t1.is_valid()):
-            #     if (t1.cleaned_data["cnt"] != None):
-            #         data["cnt"] = t1.cleaned_data["cnt"] + 1
-            #         data["forms"] = [ChooseCardForm() for i in range(data["cnt"])]
-            #         return render(request, 'calc_profit_page.html', context=data)
-            #     # return HttpResponse(t1.cleaned_data["cnt"])
-            # return HttpResponse("not ok")
         elif (sum([el.count("del") for el in request.POST.keys()]) > 0):
-            print([el for el in request.POST.keys()])
+            # print([el for el in request.POST.keys()])
             if (int(request.POST['form-0-cnt']) > 1):
-                data["cnt"] = int(request.POST['form-0-cnt']) - 1
-                print(data["cnt"])
+                data["cnt"] -= 1
+                # print(data["cnt"])
                 data["forms"].extra = data["cnt"]
-                return render(request, 'calc_profit_page.html', context=data)
-        else:
-            return HttpResponse("not ok")
+
+                for el in request.POST.keys():
+                    if (el.count('del') > 0):
+                        s = el.split(' ')
+                        # print(int(s[1]) - 1)
+                        data["form_vals"].pop(int(s[1]) - 1)
+        
+        # return render(request, 'calc_profit_page.html', context=data)
         # return render(request, 'calc_profit_page.html', context={"cards": ['testik']})
     return render(request, 'calc_profit_page.html', context=data)
