@@ -4,3 +4,7 @@ from django.db import models
 class VideoCard(models.Model):
     name = models.CharField(max_length=60)
     hashrate_no_code = models.CharField(max_length=60)
+
+class CryptoCoin(models.Model):
+    name = models.CharField(max_length=60)
+    hashrate_no_code = models.CharField(max_length=60)

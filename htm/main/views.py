@@ -70,13 +70,25 @@ def calc_profit_page(request):
         elif ("sbm" in request.POST):
             d = dict()
             for el in vcl: 
-                d[VideoCard.objects.all()[int(el.get_query(request.POST, "cards"))].name] = el.test_parse(request.POST)
+                d[VideoCard.objects.all()[int(el.get_query(request.POST, "cards"))]] = el.test_parse(request.POST)
             # for el in vcl:
                 # d[VideoCard.objects.all()[int(el.get_query(request.POST, "cards"))].name] += int(el.get_query(request.POST, "quantity"))
             
             data["picked_cards"] = d
-            # print(request.POST)
-            pass
+
+            for key in data["picked_cards"].keys():
+                for obj in CryptoCoin.objects.all():
+                    url =f"https://www.hashrate.no/gpus/{key.hashrate_no_code}/{obj.hashrate_no_code}"
+                    r = requests.get(url)
+                    txt = bs(r.text)
+                    d1 = txt.find_all("span", {"class", "description"})
+                    t1 = str(bs(str(d1)).text)
+                    print(url)
+                    if ("Mh/s" not in t1):
+                        pass
+                    else:
+                        mt = t1.split(" Mh/s ")
+                        print(float(mt[0].split(" ")[-1]), "Mh/s")
         
         data["forms"].extra = data["cnt"]
         tl, tq = [], []
