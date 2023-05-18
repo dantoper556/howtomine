@@ -140,3 +140,38 @@ option:hover {
     color: lightgreen;
     transition: .5s;
 }
+
+.profit_tbl {
+    /* border: 3px solid #cccccc; */
+    background-color: #333333;
+}
+
+.profit_tbl_row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    border: 0.01px solid #0a0a0a;
+}
+
+.profit_tbl_col {
+    /* text-align: center; */
+    padding-left: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border: 0.05px solid #0a0a0a;
+}
+
+.beautiful_btn {
+    margin-left: 2%;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    background-color: #333333;
+    color: white;
+    transition: .5s;
+}
+
+.beautiful_btn:hover {
+    background-color: #cccccc;
+    color: #333333;
+    transition: .5s;
+}

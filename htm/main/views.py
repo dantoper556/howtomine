@@ -12,6 +12,37 @@ def main_page(request):
 def make_conf_page(request):
     return render(request, 'make_conf_page.html')
 
+def calc_config_profit(config: dict()) -> dict():
+    profit = dict()
+    for obj in CryptoCoin.objects.all(): profit[obj] = [0, 0, 0]
+    for key, quantity in config.items():
+        for obj in CryptoCoin.objects.all():
+            url = f"https://www.hashrate.no/gpus/{key.hashrate_no_code}/{obj.hashrate_no_code}"
+            r = requests.get(url)
+            txt = bs(r.text)
+            d1 = txt.find_all("span", {"class", "description"})
+            t1 = str(bs(str(d1)).text)
+            # print(url)
+            if ("Mh/s" not in t1):
+                pass
+            else:
+                mt = t1.split(" Mh/s ")
+                # print(float(mt[0].split(" ")[-1]), "Mh/s")
+                profit[obj][0] += float(mt[0].split(" ")[-1]) * quantity
+
+                url = f"https://www.hashrate.no/coins/{obj.hashrate_no_code.lower()}"
+                r = requests.get(url)
+                txt = bs(r.text)
+                d1 = txt.find_all("td", {"class", "infoFocus"})[1]
+                print(float(d1.text.split(" ")[0]))
+                # t1 = str(bs(str(d1)).text).split()
+                profit[obj][1] = profit[obj][0] * float(d1.text.split(" ")[0])
+                d2 = txt.find_all("font", {"class", "infoFocus"})[0]
+                coin_to_usd = float(d2.text[1:])
+                profit[obj][2] = profit[obj][1] * coin_to_usd
+                # print(obj.name, float(d2.text[1:]))
+    return profit
+
 def calc_profit_page(request):
     class VCParser:
         def __init__(self, ind: int, quantity: int = 1) -> None:
@@ -37,35 +68,7 @@ def calc_profit_page(request):
             # print(t1)
         
         def parse_hashrate(self, req):
-            ind = int(self.get_query(req, "cards"))
-            quantity = int(self.get_query(req, "quantity"))
-            key = VideoCard.objects.all()[ind]
-            d = dict()
-            dailyr = dict()
-            for obj in CryptoCoin.objects.all():
-                url = f"https://www.hashrate.no/gpus/{key.hashrate_no_code}/{obj.hashrate_no_code}"
-                r = requests.get(url)
-                txt = bs(r.text)
-                d1 = txt.find_all("span", {"class", "description"})
-                t1 = str(bs(str(d1)).text)
-                # print(url)
-                if ("Mh/s" not in t1):
-                    pass
-                else:
-                    mt = t1.split(" Mh/s ")
-                    # print(float(mt[0].split(" ")[-1]), "Mh/s")
-                    d[obj.name] = float(mt[0].split(" ")[-1]) * quantity
-
-                    url = f"https://www.hashrate.no/coins/{obj.hashrate_no_code.lower()}"
-                    r = requests.get(url)
-                    txt = bs(r.text)
-                    d1 = txt.find_all("font", {"class", "gpu-info-text"})[2]
-                    t1 = str(bs(str(d1)).text).split()
-                    if (t1[1] == "K"): dailyr[obj.name] = float(t1[0]) * 1000
-                    elif (t1[1] == "T"): dailyr[obj.name] = float(t1[0]) * 1000000
-                    dailyr[obj.name] = d[obj.name] * 86400 / dailyr[obj.name]
-                    print(obj.name, t1)
-            return d, dailyr
+            pass
 
     b = 0
     data = dict()
@@ -78,10 +81,9 @@ def calc_profit_page(request):
     data["form_vals"] = [0]
     data["form_quant"] = [1]
     data["picked_cards"] = []
-    data["profit_mhs"] = dict()
-    data["profit_crypto"] = dict()
-    for el in CryptoCoin.objects.all(): data["profit_mhs"][el.name] = 0
-    for el in CryptoCoin.objects.all(): data["profit_crypto"][el.name] = 0
+
+    data["profit"] = dict()
+    for el in CryptoCoin.objects.all(): data["profit"][el.name] = [0, 0]
     
     if (request.method == "POST"):
         data["cnt"] = int(request.POST['form-0-cnt'])
@@ -103,21 +105,27 @@ def calc_profit_page(request):
                         vcl.pop(int(s[1]) - 1)
             flag = 2
         elif ("sbm" in request.POST):
-            d = dict()
+            config = dict()
+            for el in VideoCard.objects.all(): config[el] = 0
             for el in vcl: 
-                d[VideoCard.objects.all()[int(el.get_query(request.POST, "cards"))]] = el.test_parse(request.POST)
+                config[VideoCard.objects.all()[int(el.get_query(request.POST, "cards"))]] += int(el.get_query(request.POST, "quantity"))
+            print(config)
+            raw_profit = calc_config_profit(config)
+            print(raw_profit)
+            profit = dict()
+            for obj in CryptoCoin.objects.all():
+                profit[obj.name] = ['', '', '', '']
             
-            data["picked_cards"] = []
-            for el in vcl:
-                r, k = el.parse_hashrate(request.POST)
-                # data["picked_cards"].append(k)
-                for key, val in r.items():
-                    data["profit_mhs"][key] += val
-                    data["profit_mhs"][key] = round(data["profit_mhs"][key], 2)
-                for key, val in k.items():
-                    data["profit_crypto"][key] += val
-                    data["profit_crypto"][key] = round(data["profit_crypto"][key], 2)
-            print(data["picked_cards"])
+            for key, val in raw_profit.items():
+                profit[key.name] = [
+                    f'{str(round(val[0], 2))} Mh/s', 
+                    f'{str(round(val[1], 2))} {key.hashrate_no_code}',
+                    f'{str(round(val[2], 2))} $',
+                    f'{str(round(val[2] * 30, 2))} $',
+                ]
+            
+            print(profit)
+            data["profit"] = profit
         
         data["forms"].extra = data["cnt"]
         tl, tq = [], []

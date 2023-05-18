@@ -66,17 +66,52 @@
             {% endfor %}
             <button name="inc" type="submit" onclick="inc()" class="trans_btn">Добавить карту</button>
             <br>
-            <button name="sbm" type="submit">go</button>
+            <button name="sbm" class="beautiful_btn" type="submit">Рассчитать</button>
         </form>
 
-        {{picked_cards}}
-        {% for name, val in profit_mhs.items %}
-            <p>{{name}}: {{val}} Mh/s</p>
-        {% endfor %}
+        <br>
+        <br>
+
+        <h2 id="mp_header">Таблица прибыли</h2>
+        <div class="profit_tbl">
+            <div class="profit_tbl_row">
+                <div class="profit_tbl_col">
+                    Монета
+                </div>
+                <div class="profit_tbl_col">
+                    Хешрейт фермы
+                </div>
+                <div class="profit_tbl_col">
+                    Прибыль, 24ч
+                </div>
+                <div class="profit_tbl_col">
+                    Прибыль в фиатной валюте, 24ч
+                </div>
+                <div class="profit_tbl_col">
+                    Прибыль в фиатной валюте, 30д
+                </div>
+            </div>
+            {% for name, val in profit.items %}
+                <div class="profit_tbl_row">
+                    <div class="profit_tbl_col">
+                        {{name}}
+                    </div>
+                    <div class="profit_tbl_col">
+                        {{val.0}}
+                    </div>
+                    <div class="profit_tbl_col">
+                        {{val.1}}
+                    </div>
+                    <div class="profit_tbl_col">
+                        {{val.2}}
+                    </div>
+                    <div class="profit_tbl_col">
+                        {{val.3}}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
         
-        {% for name, val in profit_crypto.items %}
-            <p>{{name}}: {{val}} {{name}}</p>
-        {% endfor %}
         
         {% for type in form_vals %}
             <script>restore_types("{{forloop.counter}}", "{{type}}")</script>
