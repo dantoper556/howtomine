@@ -29,7 +29,29 @@
                 var q = "input[name='form-" + String(i) +"-quantity']";
                 var v = document.querySelector(q);
                 if (v.value == "") v.value = "1";
+                if (i > 0) {
+                    var eq = "input[name='form-" + String(i) + "-electricity']";
+                    var e = document.querySelector(eq);
+                    // e.styles.visible = false
+                    e.value = 1;
+                    e.style.visibility = "hidden";
+                    e.style.width = "0px";
+                    e.style.margin = "0px";
+                    // alert(e);
+                    eq = "label[for='id_form-" + String(i) + "-electricity']";
+                    e = document.querySelector(eq);
+                    // alert(e);
+                    // e.styles.visible = false
+                    // e.value = 1;
+                    e.style.visibility = "hidden";
+                    e.innerHTML = "";
+    
+                    // e.style.width = "0px";
+                }
             }
+            var q = "button[name='del 1']";
+            var v = document.querySelector(q);
+            v.style.visibility = "hidden";
         }
 
         function restore_types(i, val) {
@@ -82,13 +104,13 @@
                     Хешрейт фермы
                 </div>
                 <div class="profit_tbl_col">
-                    Прибыль, 24ч
+                    Прибыль в криптовалюте, 24ч
                 </div>
                 <div class="profit_tbl_col">
-                    Прибыль в фиатной валюте, 24ч
+                    Прибыль в долларах, 24ч
                 </div>
                 <div class="profit_tbl_col">
-                    Прибыль в фиатной валюте, 30д
+                    Прибыль в долларах, 30д
                 </div>
             </div>
             {% for name, val in profit.items %}

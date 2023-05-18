@@ -7,3 +7,11 @@ input {
     background-color: #474747;
     color: white;
 }
+
+#id_form-0-electricity {
+    display: block;
+    margin-bottom: 10px;
+}
+label {
+    margin: 0px;
+}
