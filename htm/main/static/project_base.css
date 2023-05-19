@@ -160,6 +160,14 @@ option:hover {
     border: 0.05px solid #0a0a0a;
 }
 
+#mulcol {
+    display: grid;
+    grid-template-areas: 
+        "A B"
+        "C D"
+    ;
+}
+
 .beautiful_btn {
     margin-left: 2%;
     padding: 10px;

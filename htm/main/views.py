@@ -12,35 +12,49 @@ def main_page(request):
 def make_conf_page(request):
     return render(request, 'make_conf_page.html')
 
-def calc_config_profit(config: dict()) -> dict():
+def calc_config_profit(config: dict(), elec_price: float) -> dict():
+    print(elec_price)
     profit = dict()
-    for obj in CryptoCoin.objects.all(): profit[obj] = [0, 0, 0]
+    for obj in CryptoCoin.objects.all(): profit[obj] = [0, 0, 0, 0, 0]
     for key, quantity in config.items():
         for obj in CryptoCoin.objects.all():
             url = f"https://www.hashrate.no/gpus/{key.hashrate_no_code}/{obj.hashrate_no_code}"
-            r = requests.get(url)
-            txt = bs(r.text)
+            r1 = requests.get(url)
+            txt = bs(r1.text, features="html.parser")
             d1 = txt.find_all("span", {"class", "description"})
-            t1 = str(bs(str(d1)).text)
-            # print(url)
+            t1 = str(bs(str(d1), features="html.parser").text)
+            # print(url
             if ("Mh/s" not in t1):
                 pass
             else:
+                w = 0
+                d2 = txt.find_all("td")
+                for el in d2:
+                    if ("watt" in str(el)):
+                        # print(el.text)
+                        w = int(el.text.split()[0])
+                        break
+                print(w * 24 / 1000 * elec_price)
+
                 mt = t1.split(" Mh/s ")
                 # print(float(mt[0].split(" ")[-1]), "Mh/s")
                 profit[obj][0] += float(mt[0].split(" ")[-1]) * quantity
 
                 url = f"https://www.hashrate.no/coins/{obj.hashrate_no_code.lower()}"
-                r = requests.get(url)
-                txt = bs(r.text)
+                r2 = requests.get(url)
+                txt = bs(r2.text, features="html.parser")
                 d1 = txt.find_all("td", {"class", "infoFocus"})[1]
-                print(float(d1.text.split(" ")[0]))
+                # print(float(d1.text.split(" ")[0]))
                 # t1 = str(bs(str(d1)).text).split()
                 profit[obj][1] = profit[obj][0] * float(d1.text.split(" ")[0])
                 d2 = txt.find_all("font", {"class", "infoFocus"})[0]
                 coin_to_usd = float(d2.text[1:])
                 profit[obj][2] = profit[obj][1] * coin_to_usd
+                profit[obj][3] += quantity * w * 24 / 1000
+                profit[obj][4] += (quantity * w * 24 / 1000 * elec_price) / coin_to_usd
                 # print(obj.name, float(d2.text[1:]))
+
+
     return profit
 
 def calc_profit_page(request):
@@ -81,12 +95,14 @@ def calc_profit_page(request):
     data["form_vals"] = [0]
     data["form_quant"] = [1]
     data["picked_cards"] = []
+    data["elec"] = 0.1
 
     data["profit"] = dict()
     for el in CryptoCoin.objects.all(): data["profit"][el.name] = [0, 0]
     
     if (request.method == "POST"):
         data["cnt"] = int(request.POST['form-0-cnt'])
+        data["elec"] = float(request.POST['form-0-electricity'])
         sz = data["cnt"]
         vcl = []
         for i in range(sz): vcl.append(VCParser(i))
@@ -110,18 +126,37 @@ def calc_profit_page(request):
             for el in vcl: 
                 config[VideoCard.objects.all()[int(el.get_query(request.POST, "cards"))]] += int(el.get_query(request.POST, "quantity"))
             print(config)
-            raw_profit = calc_config_profit(config)
+            raw_profit = calc_config_profit(config, data["elec"])
             print(raw_profit)
             profit = dict()
             for obj in CryptoCoin.objects.all():
-                profit[obj.name] = ['', '', '', '']
+                profit[obj.name] = [
+                    'hashrate',       #0
+                    'd_in_coin',      #1
+                    'm_in_coin',      #2
+                    'd_in_fiat',      #3
+                    'm_in_fiat',      #4 
+                    'pwr_cons',       #5
+                    'pwr_cons_usd',   #6 
+                    'd_profit',       #7
+                    'm_profit',       #8
+                ]
             
             for key, val in raw_profit.items():
                 profit[key.name] = [
-                    f'{str(round(val[0], 2))} Mh/s', 
-                    f'{str(round(val[1], 2))} {key.hashrate_no_code}',
-                    f'{str(round(val[2], 2))} $',
-                    f'{str(round(val[2] * 30, 2))} $',
+                    f'{(round(val[0], 2))} Mh/s',                                #0
+                    f'{(round(val[1], 2))} {key.hashrate_no_code}',              #1
+                    f'{(round(val[1] * 30, 2))} {key.hashrate_no_code}',         #2
+                    f'{(round(val[2], 2))} $',                                   #3
+                    f'{(round(val[2] * 30, 2))} $',                              #4
+                    f'{(round(val[3], 2))} kWh',                                 #5
+                    f'{(round(val[3] * data["elec"], 2))} $',                    #6
+                    f'{(round(val[3] * 30, 2))} kWh',                            #7
+                    f'{(round(val[3] * 30 * data["elec"], 2))} $',               #8
+                    f'{(round(val[2] - val[3] * data["elec"], 2))} $',           #9
+                    f'{(round(val[2] * 30 - val[3] * data["elec"] * 30, 2))} $', #10
+                    f'{(round(val[1] - val[4], 2))} {key.hashrate_no_code}',           #11
+                    f'{(round(val[1] * 30 - val[4] * 30, 2))} {key.hashrate_no_code}', #12
                 ]
             
             print(profit)

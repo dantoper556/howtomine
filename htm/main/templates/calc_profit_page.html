@@ -25,6 +25,10 @@
             // alert(inp.name);
             inp.value = "{{cnt}}";
 
+            inp = document.querySelector("input[name='form-0-electricity']");
+            // alert(inp.name);
+            inp.value = "{{elec}}";
+
             for (let i = 0; i < "{{cnt}}"; i++) {
                 var q = "input[name='form-" + String(i) +"-quantity']";
                 var v = document.querySelector(q);
@@ -104,13 +108,13 @@
                     Хешрейт фермы
                 </div>
                 <div class="profit_tbl_col">
-                    Прибыль в криптовалюте, 24ч
+                    Доход, 24ч | 30д
                 </div>
                 <div class="profit_tbl_col">
-                    Прибыль в долларах, 24ч
+                    Потребление электроэнергии, 24ч | 30д
                 </div>
                 <div class="profit_tbl_col">
-                    Прибыль в долларах, 30д
+                    Прибыль, 24ч | 30д
                 </div>
             </div>
             {% for name, val in profit.items %}
@@ -121,14 +125,23 @@
                     <div class="profit_tbl_col">
                         {{val.0}}
                     </div>
-                    <div class="profit_tbl_col">
-                        {{val.1}}
+                    <div class="profit_tbl_col" id="mulcol">
+                        <div id="c1">{{val.1}}</div>
+                        <div id="c3">{{val.2}}</div>
+                        <div id="c2">{{val.3}}</div>
+                        <div id="c4">{{val.4}}</div>
                     </div>
-                    <div class="profit_tbl_col">
-                        {{val.2}}
+                    <div class="profit_tbl_col" id="mulcol">
+                        <div id="c1">{{val.5}}</div>
+                        <div id="c3">{{val.6}}</div>
+                        <div id="c2">{{val.7}}</div>
+                        <div id="c4">{{val.8}}</div>
                     </div>
-                    <div class="profit_tbl_col">
-                        {{val.3}}
+                    <div class="profit_tbl_col" id="mulcol">
+                        <div id="c1">{{val.9}}</div>
+                        <div id="c3">{{val.10}}</div>
+                        <div id="c2">{{val.11}}</div>
+                        <div id="c4">{{val.12}}</div>
                     </div>
                 </div>
             {% endfor %}
