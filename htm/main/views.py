@@ -131,32 +131,32 @@ def calc_profit_page(request):
             profit = dict()
             for obj in CryptoCoin.objects.all():
                 profit[obj.name] = [
-                    'hashrate',       #0
-                    'd_in_coin',      #1
-                    'm_in_coin',      #2
-                    'd_in_fiat',      #3
-                    'm_in_fiat',      #4 
-                    'pwr_cons',       #5
-                    'pwr_cons_usd',   #6 
-                    'd_profit',       #7
-                    'm_profit',       #8
+                    'hashrate',                     #0
+                    'd_in_coin',                    #1
+                    'm_in_coin',                    #2
+                    'd_in_fiat',                    #3
+                    'm_in_fiat',                    #4
+                    'pwr_cons',                     #5
+                    'pwr_cons_usd',                 #6
+                    'd_profit',                     #7
+                    'm_profit',                     #8
                 ]
             
             for key, val in raw_profit.items():
                 profit[key.name] = [
-                    f'{(round(val[0], 2))} Mh/s',                                #0
-                    f'{(round(val[1], 2))} {key.hashrate_no_code}',              #1
-                    f'{(round(val[1] * 30, 2))} {key.hashrate_no_code}',         #2
-                    f'{(round(val[2], 2))} $',                                   #3
-                    f'{(round(val[2] * 30, 2))} $',                              #4
-                    f'{(round(val[3], 2))} kWh',                                 #5
-                    f'{(round(val[3] * data["elec"], 2))} $',                    #6
-                    f'{(round(val[3] * 30, 2))} kWh',                            #7
-                    f'{(round(val[3] * 30 * data["elec"], 2))} $',               #8
-                    f'{(round(val[2] - val[3] * data["elec"], 2))} $',           #9
-                    f'{(round(val[2] * 30 - val[3] * data["elec"] * 30, 2))} $', #10
-                    f'{(round(val[1] - val[4], 2))} {key.hashrate_no_code}',           #11
-                    f'{(round(val[1] * 30 - val[4] * 30, 2))} {key.hashrate_no_code}', #12
+                    f'{(round(val[0], 2))} Mh/s',                                               #0
+                    f'{(round(val[1], 2))} {key.hashrate_no_code}',                             #1
+                    f'{(round(val[1] * 30, 2))} {key.hashrate_no_code}',                        #2
+                    f'{(round(val[2], 2))} $',                                                  #3
+                    f'{(round(val[2] * 30, 2))} $',                                             #4
+                    f'{(round(val[3], 2))} kWh',                                                #5
+                    f'{(round(val[3] * data["elec"], 2))} $',                                   #6
+                    f'{(round(val[3] * 30, 2))} kWh',                                           #7
+                    f'{(round(val[3] * 30 * data["elec"], 2))} $',                              #8
+                    f'{(round(val[2] - val[3] * data["elec"], 2))} $',                          #9
+                    f'{(round(val[2] * 30 - val[3] * data["elec"] * 30, 2))} $',                #10
+                    f'{(round(val[1] - val[4], 2))} {key.hashrate_no_code}',                    #11
+                    f'{(round(val[1] * 30 - val[4] * 30, 2))} {key.hashrate_no_code}',          #12
                 ]
             
             print(profit)
