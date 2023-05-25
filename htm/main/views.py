@@ -32,7 +32,7 @@ def calc_config_profit(config: dict(), elec_price: float) -> dict():
                 for el in d2:
                     if ("watt" in str(el)):
                         # print(el.text)
-                        w = int(el.text.split()[0])
+                        w = int(el.text.split()[0]) + 20
                         break
                 print(w * 24 / 1000 * elec_price)
 
@@ -102,7 +102,7 @@ def calc_profit_page(request):
     
     if (request.method == "POST"):
         data["cnt"] = int(request.POST['form-0-cnt'])
-        data["elec"] = float(request.POST['form-0-electricity'])
+        data["elec"] = float(request.POST['electricity'])
         sz = data["cnt"]
         vcl = []
         for i in range(sz): vcl.append(VCParser(i))
@@ -121,6 +121,8 @@ def calc_profit_page(request):
                         vcl.pop(int(s[1]) - 1)
             flag = 2
         elif ("sbm" in request.POST):
+            print(request.POST)
+
             config = dict()
             for el in VideoCard.objects.all(): config[el] = 0
             for el in vcl: 
