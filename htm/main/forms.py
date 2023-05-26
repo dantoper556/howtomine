@@ -11,3 +11,9 @@ class ChooseCardForm(Form):
     cnt = IntegerField(required=False, label="", widget=HiddenInput())
     cards = ChoiceField(label="", choices=((i, VideoCard.objects.all()[i].name) for i in range(len(VideoCard.objects.all()))))
     quantity = IntegerField(required=True, label="", min_value=1)
+
+class ChooseAsicsForm(Form):
+    # electricity = DecimalField(label="electricity price in usd", min_value=0, required=True)
+    cnt = IntegerField(required=False, label="", widget=HiddenInput())
+    cards = ChoiceField(label="", choices=((i, Asics.objects.all()[i].name) for i in range(len(Asics.objects.all()))))
+    quantity = IntegerField(required=True, label="", min_value=1)
