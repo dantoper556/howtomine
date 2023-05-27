@@ -171,24 +171,50 @@ def calc_asics_profit_page(request):
                 print(key.hashrate_no_code, val)
 
             raw_profit = calc_asics_config_profit(config, data["elec"])
-            profit = dict()            
-            for key, val in raw_profit.items():
-                profit[key.name] = [
-                    f'{(round(val[0], 2))} Mh/s',                                               #0
-                    f'{(round(val[1], 2))} {key.hashrate_no_code}',                             #1
-                    f'{(round(val[1] * 30, 2))} {key.hashrate_no_code}',                        #2
-                    f'{(round(val[2], 2))} $',                                                  #3
-                    f'{(round(val[2] * 30, 2))} $',                                             #4
-                    f'{(round(val[3], 2))} kWh',                                                #5
-                    f'{(round(val[3] * data["elec"], 2))} $',                                   #6
-                    f'{(round(val[3] * 30, 2))} kWh',                                           #7
-                    f'{(round(val[3] * 30 * data["elec"], 2))} $',                              #8
-                    f'{(round(val[2] - val[3] * data["elec"], 2))} $',                          #9
-                    f'{(round(val[2] * 30 - val[3] * data["elec"] * 30, 2))} $',                #10
-                    f'{(round(val[1] - val[4], 2))} {key.hashrate_no_code}',                    #11
-                    f'{(round(val[1] * 30 - val[4] * 30, 2))} {key.hashrate_no_code}',          #12
-                ]
-
+            data["raw"] = raw_profit
+            profit = dict()
+            total = [0, 0, 0, 0]
+            for m, l in raw_profit.items():
+                profit[m.name] = []
+                for coin, val in l.items():
+                    profit[m.name].append([
+                        coin.name,
+                        f'{(round(val[0], 2))} Mh/s',                                               #0
+                        f'{(round(val[1], 2))} {coin.hashrate_no_code}',                             #1
+                        f'{(round(val[1] * 30, 2))} {coin.hashrate_no_code}',                        #2
+                        f'{(round(val[2], 2))} $',                                                  #3
+                        f'{(round(val[2] * 30, 2))} $',                                             #4
+                        f'{(round(val[3], 2))} kWh',                                                #5
+                        f'{(round(val[3] * data["elec"], 2))} $',                                   #6
+                        f'{(round(val[3] * 30, 2))} kWh',                                           #7
+                        f'{(round(val[3] * 30 * data["elec"], 2))} $',                              #8
+                        f'{(round(val[2] - val[3] * data["elec"], 2))} $',                          #9
+                        f'{(round(val[2] * 30 - val[3] * data["elec"] * 30, 2))} $',                #10
+                        f'{(round(val[1] - val[4], 2))} {coin.hashrate_no_code}',                    #11
+                        f'{(round(val[1] * 30 - val[4] * 30, 2))} {coin.hashrate_no_code}',          #12
+                    ])
+                profit[m.name].sort(key=lambda a: float(a[10].split()[0]), reverse=True)
+                total[0] += float(profit[m.name][0][4].split()[0])
+                total[1] += float(profit[m.name][0][7].split()[0])
+                total[2] += float(profit[m.name][0][6].split()[0])
+                total[3] += float(profit[m.name][0][10].split()[0])
+                # total[3] += val[2] - val[3] * data["elec"]
+            profit["Суммарная доходность конфигурации"] = [[
+                "-",
+                "-",
+                "-",
+                "-",
+                f'{round(total[0], 2)} $',
+                f'{round(total[0] * 30, 2)} $',
+                f'{round(total[2], 2)} kWh',
+                f'{round(total[1], 2)} $',
+                f'{round(total[2] * 30, 2)} kWh',
+                f'{round(total[1] * 30, 2)} $',
+                f'{round(total[3], 2)} $',
+                f'{round(total[3] * 30, 2)} $',
+                "-",
+                "-",
+            ]]
             data["profit"] = profit
         
         data["forms"].extra = data["cnt"]
