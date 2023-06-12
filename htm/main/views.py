@@ -5,7 +5,7 @@ from .forms import *
 from django.forms import formset_factory
 import requests
 from bs4 import BeautifulSoup as bs
-from .calculators import calc_config_profit, calc_asics_config_profit
+from .calculators import calc_config_profit, calc_asics_config_profit, calc_duals_confin_profit
 
 def main_page(request):
     return render(request, 'main_page.html')
@@ -61,7 +61,7 @@ def calc_profit_page(request):
                         vcl.pop(int(s[1]) - 1)
             flag = 2
         elif ("sbm" in request.POST):
-            print(request.POST)
+            # print(request.POST)
 
             config = dict()
             for el in VideoCard.objects.all(): config[el] = 0
@@ -69,18 +69,7 @@ def calc_profit_page(request):
                 config[VideoCard.objects.all()[int(el.get_query(request.POST, "cards"))]] += int(el.get_query(request.POST, "quantity"))
 
             raw_profit = calc_config_profit(config, data["elec"])
-            # for obj in CryptoCoin.objects.all():
-            #     profit[obj.name] = [
-            #         'hashrate',                     #0
-            #         'd_in_coin',                    #1
-            #         'm_in_coin',                    #2
-            #         'd_in_fiat',                    #3
-            #         'm_in_fiat',                    #4
-            #         'pwr_cons',                     #5
-            #         'pwr_cons_usd',                 #6
-            #         'd_profit',                     #7
-            #         'm_profit',                     #8
-            #     ]
+            raw_duals_profit = calc_duals_confin_profit(raw_profit, config, data["elec"])
             
             profit = []
             for key, val in raw_profit.items():
@@ -102,8 +91,20 @@ def calc_profit_page(request):
                     f'{(round(val[1] * 30 - val[4] * 30, 2))} {key.hashrate_no_code}',          #12
                 ])
             profit.sort(key=lambda a: float(a[10].split()[0]), reverse=True)
-            print(profit)
+            # print(profit)
             data["profit"] = profit
+
+            duals = []
+            for key, val in raw_duals_profit.items():
+                duals.append([
+                    val[3],
+                    str(key),
+                    [round(val[0][0], 2), round(val[0][1], 2)],
+                    round(val[1], 2),
+                    round(val[1] * 30, 2),
+                    round(val[2], 2),
+                ])
+            data["duals"] = duals
         
         data["forms"].extra = data["cnt"]
         tl, tq = [], []

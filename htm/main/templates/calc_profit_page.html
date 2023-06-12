@@ -74,6 +74,7 @@
         <br>
         <br>
 
+
         <h2 id="mp_header">Таблица прибыли</h2>
         <div class="profit_tbl">
             <div class="profit_tbl_row">
@@ -91,6 +92,9 @@
                 </div>
                 <div class="profit_tbl_col">
                     Прибыль, 24ч | 30д
+                </div>
+                <div class="profit_tbl_col">
+                    Параметры разгона
                 </div>
             </div>
             {% for val in profit %}
@@ -119,10 +123,56 @@
                         <div id="c2">{{val.10}}</div>
                         <div id="c4">{{val.11}}</div>
                     </div>
+                    <div class="profit_tbl_col" id="mulcol">
+                    </div>
                 </div>
             {% endfor %}
         </div>
-        
+        <br>
+        <h2 id="mp_header">Таблица прибыли при дуал-майнинге</h2>
+        <div class="profit_tbl">
+            <div class="profit_tbl_row">
+                <div class="profit_tbl_col">
+                    Монета
+                </div>
+                <div class="profit_tbl_col">
+                    Хешрейт фермы
+                </div>
+                <div class="profit_tbl_col">
+                    Доход, 24ч | 30д
+                </div>
+                <div class="profit_tbl_col">
+                    Потребление электроэнергии, 24ч | 30д
+                </div>
+                <div class="profit_tbl_col">
+                    Прибыль, 24ч | 30д
+                </div>
+                <div class="profit_tbl_col">
+                    Параметры разгона
+                </div>
+            </div>
+            {% for val in duals %}
+                <div class="profit_tbl_row">
+                    <div class="profit_tbl_col">
+                        {{val.1}}
+                    </div>
+                    <div class="profit_tbl_col" id="mulcol">
+                        <div id="c1">{{val.0.0}}:</div>
+                        <div id="c3">{{val.0.1}}:</div>
+                        <div id="c2">{{val.2.0}} Mh/s</div>
+                        <div id="c4">{{val.2.1}} Mh/s</div>
+                    </div>
+                    <div class="profit_tbl_col" id="mulcol">
+                    </div>
+                    <div class="profit_tbl_col" id="mulcol">
+                    </div>
+                    <div class="profit_tbl_col" id="mulcol">
+                    </div>
+                    <div class="profit_tbl_col" id="mulcol">
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
         
         {% for type in form_vals %}
             <script>restore_types("{{forloop.counter}}", "{{type}}")</script>

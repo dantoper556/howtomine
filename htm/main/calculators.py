@@ -41,13 +41,32 @@ def calc_config_profit(config: dict(), elec_price: float) -> dict():
 
     return profit
 
+def calc_duals_confin_profit(solos: dict(), config: dict(), elec_price: float) -> dict():
+    profit = dict()
+    for pair in Duals.objects.all():
+        first, second = pair.pair.all()
+        if (solos[first][0] > solos[second][0]):
+            t = first
+            first = second
+            second = t
+
+        profit[pair] = [
+            [solos[first][0], solos[second][0] / 2], 
+            solos[first][2] + solos[second][2] / 2,
+            (solos[second][0] / 2) / solos[first][0],   
+            [first, second] 
+        ]
+        print(f'1: {first} = {solos[first]}')
+        print(f'2: {second} = {solos[second]}')
+    
+    return profit
+
 def calc_asics_config_profit(config: dict(), elec_price: float):
     profit = dict()
     for asics, quantity in config.items():  
         if (quantity == 0): continue
         profit[asics] = dict()
 
-    #     print(asics, quantity)
         url = f"https://hashrate.no/asics/{asics.hashrate_no_code}"
         req = requests.get(url)
         raw_text = bs(req.text, features="html.parser")
@@ -67,7 +86,6 @@ def calc_asics_config_profit(config: dict(), elec_price: float):
         for el in parsed_table:
             if ("h/s" in str(el.text)):
                 hs = float(el.text.split()[0])
-                # if (el.text.split()[1][0] == "T"): hs *= 1000000
                 mhs.append(hs)
         print(mhs)
 
@@ -75,11 +93,8 @@ def calc_asics_config_profit(config: dict(), elec_price: float):
         parsed_table = raw_text.find_all("td")
         for el in parsed_table:
             if (" w" in str(el.text)):
-                # print(float(el.text.split()[0]))
                 watts.append(float(el.text.split()[0]))
-        print(watts)
-        
-        
+        print(watts)        
         
         for i in range(len(coins)):
             obj = coins[i]
@@ -95,8 +110,6 @@ def calc_asics_config_profit(config: dict(), elec_price: float):
 
             profit[asics][obj][2] = profit[asics][obj][1] * usd_per_coin
             profit[asics][obj][3] += quantity * watts[i] * 24 / 1000
-            # profit[obj][3] += quantity * watts[i] * 24 / 1000
             profit[asics][obj][4] += (quantity * watts[i] * 24 / 1000 * elec_price) / usd_per_coin
             
-    #     # for i in range(len(raw_coinname)):
     return profit
