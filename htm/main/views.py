@@ -174,48 +174,68 @@ def calc_asics_profit_page(request):
             raw_profit = calc_asics_config_profit(config, data["elec"])
             data["raw"] = raw_profit
             profit = dict()
-            total = [0, 0, 0, 0]
+            total = {
+                "prf_usd": 0,
+                "pwr_cons_usd": 0,
+                "pwr_cons": 0,
+                "clear_prf_usd": 0,
+            }
             for m, l in raw_profit.items():
                 profit[m.name] = []
                 for coin, val in l.items():
-                    profit[m.name].append([
-                        coin.name,
-                        f'{(round(val[0], 2))} Mh/s',                                               #0
-                        f'{(round(val[1], 2))} {coin.hashrate_no_code}',                             #1
-                        f'{(round(val[1] * 30, 2))} {coin.hashrate_no_code}',                        #2
-                        f'{(round(val[2], 2))} $',                                                  #3
-                        f'{(round(val[2] * 30, 2))} $',                                             #4
-                        f'{(round(val[3], 2))} kWh',                                                #5
-                        f'{(round(val[3] * data["elec"], 2))} $',                                   #6
-                        f'{(round(val[3] * 30, 2))} kWh',                                           #7
-                        f'{(round(val[3] * 30 * data["elec"], 2))} $',                              #8
-                        f'{(round(val[2] - val[3] * data["elec"], 2))} $',                          #9
-                        f'{(round(val[2] * 30 - val[3] * data["elec"] * 30, 2))} $',                #10
-                        f'{(round(val[1] - val[4], 2))} {coin.hashrate_no_code}',                    #11
-                        f'{(round(val[1] * 30 - val[4] * 30, 2))} {coin.hashrate_no_code}',          #12
-                    ])
-                profit[m.name].sort(key=lambda a: float(a[10].split()[0]), reverse=True)
-                total[0] += float(profit[m.name][0][4].split()[0])
-                total[1] += float(profit[m.name][0][7].split()[0])
-                total[2] += float(profit[m.name][0][6].split()[0])
-                total[3] += float(profit[m.name][0][10].split()[0])
+                    profit[m.name].append({
+                        "coin": coin.name,
+                        "hsh": f'{(round(val[0], 2))} Mh/s',
+                        "prf_coin": f'{(round(val[1], 2))} {coin.hashrate_no_code}',
+                        "mnh_prf_coin": f'{(round(val[1] * 30, 2))} {coin.hashrate_no_code}',
+                        "prf_usd": f'{(round(val[2], 2))} $',
+                        "mnh_prf_usd": f'{(round(val[2] * 30, 2))} $',
+                        "pwr_cons": f'{(round(val[3], 2))} kWh',
+                        "pwr_cons_usd": f'{(round(val[3] * data["elec"], 2))} $',
+                        "mnh_pwr_cons": f'{(round(val[3] * 30, 2))} kWh',
+                        "mnh_pwr_cons_usd": f'{(round(val[3] * 30 * data["elec"], 2))} $',
+                        "clear_prf_usd": f'{(round(val[2] - val[3] * data["elec"], 2))} $',
+                        "mnh_clear_prf_usd": f'{(round(val[2] * 30 - val[3] * data["elec"] * 30, 2))} $',
+                        "clear_prf_coin": f'{(round(val[1] - val[4], 2))} {coin.hashrate_no_code}',
+                        "mnh_clear_prf_coin": f'{(round(val[1] * 30 - val[4] * 30, 2))} {coin.hashrate_no_code}',
+                    })
+                profit[m.name].sort(key=lambda a: float(a["clear_prf_usd"].split()[0]), reverse=True)
+                total["prf_usd"] += float(profit[m.name][0]["prf_usd"].split()[0])
+                total["pwr_cons_usd"] += float(profit[m.name][0]["pwr_cons_usd"].split()[0])
+                total["pwr_cons"] += float(profit[m.name][0]["pwr_cons"].split()[0])
+                total["clear_prf_usd"] += float(profit[m.name][0]["clear_prf_usd"].split()[0])
                 # total[3] += val[2] - val[3] * data["elec"]
-            profit["Суммарная доходность конфигурации"] = [[
-                "-",
-                "-",
-                "-",
-                "-",
-                f'{round(total[0], 2)} $',
-                f'{round(total[0] * 30, 2)} $',
-                f'{round(total[2], 2)} kWh',
-                f'{round(total[1], 2)} $',
-                f'{round(total[2] * 30, 2)} kWh',
-                f'{round(total[1] * 30, 2)} $',
-                f'{round(total[3], 2)} $',
-                f'{round(total[3] * 30, 2)} $',
-                "-",
-                "-",
-            ]]
+            profit["Суммарная доходность конфигурации"] = [{
+                # "-",
+                # "-",
+                # "-",
+                # "-",
+                # f'{round(total[0], 2)} $',
+                # f'{round(total[0] * 30, 2)} $',
+                # f'{round(total[2], 2)} kWh',
+                # f'{round(total[1], 2)} $',
+                # f'{round(total[2] * 30, 2)} kWh',
+                # f'{round(total[1] * 30, 2)} $',
+                # f'{round(total[3], 2)} $',
+                # f'{round(total[3] * 30, 2)} $',
+                # "-",
+                # "-",
+
+                "coin": "-",
+                "hsh": "-",
+                "prf_coin": "-",
+                "mnh_prf_coin": "-",
+                "prf_usd": f'{round(total["prf_usd"], 2)} $',
+                "mnh_prf_usd": f'{round(total["prf_usd"] * 30, 2)} $',
+                "pwr_cons": f'{round(total["pwr_cons"], 2)} kWh',
+                "pwr_cons_usd": f'{round(total["pwr_cons_usd"], 2)} $',
+                "mnh_pwr_cons": f'{round(total["pwr_cons"] * 30, 2)} kWh',
+                "mnh_pwr_cons_usd": f'{round(total["pwr_cons_usd"] * 30, 2)} $',
+                "clear_prf_usd":  f'{round(total["clear_prf_usd"], 2)} $',
+                "mnh_clear_prf_usd": f'{round(total["clear_prf_usd"] * 30, 2)} $',
+                "clear_prf_coin": "-",
+                "mnh_clear_prf_coin": "-",
+            }]
             data["profit"] = profit
         
         data["forms"].extra = data["cnt"]
