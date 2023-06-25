@@ -88,11 +88,12 @@ def calc_config_profit(config: dict(), elec_price: float) -> dict():
             profit[coin][3] += quantity * w * 24 / 1000
             profit[coin][4] += (quantity * w * 24 / 1000 * elec_price) / usd_per_coin
 
-    # json.dump(dat, open("./main/jsons/coins.json", 'w'))
-    # json.dump(cards_inf, open("./main/jsons/cards.json", 'w'))
     return profit
 
-def calc_duals_confin_profit(solos: dict(), config: dict(), elec_price: float) -> dict():
+def calc_duals_config_profit(solos: dict(), config: dict(), elec_price: float) -> dict():
+    f2 = open("./main/jsons/cards.json")
+    cards_inf = json.load(f2)
+
     profit = dict()
     for pair in Duals.objects.all():
         first, second = pair.pair.all()
@@ -102,10 +103,11 @@ def calc_duals_confin_profit(solos: dict(), config: dict(), elec_price: float) -
             second = t
 
         profit[pair] = [
-            [solos[first][0], solos[second][0] / 2], 
+            [solos[first][0], solos[second][0] / 2],
             solos[first][2] + solos[second][2] / 2,
-            (solos[second][0] / 2) / max(0.0001, solos[first][0]),   
-            [first, second] 
+            (solos[second][0] / 2) / max(0.0001, solos[first][0]),
+            [first, second],
+            (solos[first][3] + solos[second][3]) / 2,
         ]    
 
     return profit
