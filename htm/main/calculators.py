@@ -112,7 +112,7 @@ def calc_duals_config_profit(solos: dict(), config: dict(), elec_price: float) -
 
     return profit
 
-def calc_asics_config_profit(config: dict(), elec_price: float):
+def calc_asics_config_profit(config: dict(), elec_price: float) -> dict():
     update_jsons()
 
     f1 = open("./main/jsons/coins.json")

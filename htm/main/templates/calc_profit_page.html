@@ -62,6 +62,7 @@
                 <div class="form">
                     {{el}}
                     <button type="submit" name="del {{forloop.counter}}" id="del_card_btn">✕</button>
+                    
                     <br>
                 </div>
                 
@@ -71,29 +72,29 @@
             <button name="sbm" class="beautiful_btn" type="submit">Рассчитать</button>
         </form>
 
-        <br>
-        <br>
+        <!-- <br>
+        <br> -->
 
 
         <h2 id="mp_header">Таблица прибыли</h2>
         <div class="profit_tbl">
             <div class="profit_tbl_row">
-                <div class="profit_tbl_col">
+                <div id="tbl_head" class="profit_tbl_col">
                     Монета
                 </div>
-                <div class="profit_tbl_col">
+                <div id="tbl_head" class="profit_tbl_col">
                     Хешрейт фермы
                 </div>
-                <div class="profit_tbl_col">
-                    Доход, 24ч | 30д
+                <div id="tbl_head" class="profit_tbl_col">
+                    Доход<br> 24ч | 30д
                 </div>
-                <div class="profit_tbl_col">
-                    Потребление электроэнергии, 24ч | 30д
+                <div id="tbl_head" class="profit_tbl_col">
+                    Потребление электроэнергии<br> 24ч | 30д
                 </div>
-                <div class="profit_tbl_col">
-                    Прибыль, 24ч | 30д
+                <div id="tbl_head" class="profit_tbl_col">
+                    Прибыль<br> 24ч | 30д
                 </div>
-                <div class="profit_tbl_col">
+                <div id="tbl_head" class="profit_tbl_col">
                     Параметры разгона
                 </div>
             </div>
@@ -126,26 +127,26 @@
                 </div>
             {% endfor %}
         </div>
-        <br>
+        <!-- <br> -->
         <h2 id="mp_header">Таблица прибыли при дуал-майнинге</h2>
         <div class="profit_tbl">
             <div class="profit_tbl_row">
-                <div class="profit_tbl_col">
+                <div id="tbl_head" class="profit_tbl_col">
                     Монета
                 </div>
-                <div class="profit_tbl_col">
+                <div id="tbl_head" class="profit_tbl_col">
                     Хешрейт фермы
                 </div>
-                <div class="profit_tbl_col">
-                    Доход, 24ч | 30д
+                <div id="tbl_head" class="profit_tbl_col">
+                    Доход<br> 24ч | 30д
                 </div>
-                <div class="profit_tbl_col">
-                    Потребление электроэнергии, 24ч | 30д
+                <div id="tbl_head" class="profit_tbl_col">
+                    Потребление электроэнергии<br> 24ч | 30д
                 </div>
-                <div class="profit_tbl_col">
-                    Прибыль, 24ч | 30д
+                <div id="tbl_head" class="profit_tbl_col">
+                    Прибыль<br> 24ч | 30д
                 </div>
-                <div class="profit_tbl_col">
+                <div id="tbl_head" class="profit_tbl_col">
                     Параметры разгона
                 </div>
             </div>
@@ -188,11 +189,9 @@
             {% endfor %}
         </div>
 
-        <!-- {{prices}} -->
-        <br>
         <h2 id="mp_header">Рентабельность</h2>
         {% for item in prices.items %}
-            <div><strong>{{item.0}}</strong> : от {{item.1.0}} рублей. <a class="beautiful_btn" href="{{item.1.1}}" target="_blank">Купить</a></div>
+            <div id="just_text"><strong>{{item.0}}</strong> : от {{item.1.0}} руб. <a class="beautiful_btn" href="{{item.1.1}}" target="_blank">Купить</a></div>
             <br>
             {% endfor %}
         
