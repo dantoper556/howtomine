@@ -95,5 +95,3 @@ def make_table_asics(data: dict(), raw_profit: dict()):
     return profit
 
 
-def make_offer(config):
-    return

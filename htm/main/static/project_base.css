@@ -7,7 +7,7 @@ body {
 }
 
 #mp_header {
-    padding-left: 3%;
+    padding-left: 2%;
     margin-top: 2%;
     margin-bottom: 1.8%;
 }
@@ -28,8 +28,8 @@ body {
     /* width: 100%; */
     display:grid;
     grid-template-areas: 
-        "A A B B C C"
-        "D D D E E E"
+        "A B"
+        "C D"
     ;
 }
 
@@ -58,14 +58,14 @@ body {
 
 .a1 {
     /* color scheme */
-    border-radius: 10px;
+    border-radius: 5px;
     background-color: #333333;
 
     /* text settings */
     color: white;
     text-align: center;
     text-decoration: none;
-    transition: .5s;
+    transition: .3s;
 }
 
 .a1:hover {
@@ -75,7 +75,7 @@ body {
     /* block style settings */
     /* box-shadow: 0px 0px 5px rgba(255, 255, 255, 0.5); */
     
-    transition: .5s;
+    transition: .3s;
 }
 
 #mp_desc {
@@ -93,7 +93,7 @@ body {
     height: auto;
     margin: 10px;
     padding: 10px 20px 10px 20px;
-    margin-left: 3vw;
+    margin-left: 2%;
     /* background-color: #333333; */
 }
 
@@ -105,7 +105,13 @@ button {
 #del_card_btn {
     background-color: transparent;
     border: none;
+    color: white;
+    transition: .3s;
+}
+
+#del_card_btn:hover {
     color: red;
+    transition: .3s;
 }
 
 select, option {
@@ -113,16 +119,16 @@ select, option {
     min-width: fit-content;
     width: 30%;
     background-color: #333333;
-    border-radius: 10px;
+    border-radius: 5px;
     color: white;
     border: none;
-    transition: 0.5s;
+    transition: 0.3s;
 }
 
 option:hover {
     color: #073b4c;
     background-color: #cccccc;
-    transition: 0.5s;
+    transition: 0.3s;
 }
 
 .forms {
@@ -142,12 +148,12 @@ option:hover {
     border: none;
     background-color: transparent;
     color: white;
-    transition: .5s;
+    transition: .3s;
 }
 
 .trans_btn:hover {
     color: lightgreen;
-    transition: .5s;
+    transition: .3s;
 }
 
 #tbl_head {
@@ -187,15 +193,15 @@ option:hover {
     margin-left: 2%;
     padding: 10px;
     border: none;
-    border-radius: 10px;
+    border-radius: 5px;
     background-color: #333333;
     color: white;
-    transition: .5s;
+    transition: .3s;
     text-decoration: none;
 }
 
 .beautiful_btn:hover {
     background-color: #cccccc;
     color: #333333;
-    transition: .5s;
+    transition: .3s;
 }
