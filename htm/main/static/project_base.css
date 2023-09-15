@@ -176,6 +176,7 @@ option:hover {
     background-color: #333333;
     color: white;
     transition: .5s;
+    text-decoration: none;
 }
 
 .beautiful_btn:hover {

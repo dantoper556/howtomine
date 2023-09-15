@@ -73,15 +73,15 @@ def calc_config_profit(config: dict(), elec_price: float) -> dict():
     for obj in CryptoCoin.objects.all(): profit[obj] = [0, 0, 0, 0, 0]
     for key, quantity in config.items():
         for coin in CryptoCoin.objects.all():
-            print(key.name, coin.name, cards_inf["parsed"][key.name][coin.name], coins_inf["parsed"][coin.name])
-            print(key, quantity)
+            # print(key.name, coin.name, cards_inf["parsed"][key.name][coin.name], coins_inf["parsed"][coin.name])
+            # print(key, quantity)
             profit[coin][0] += cards_inf["parsed"][key.name][coin.name]["hsh"] * quantity
 
             profit_1mhs = coins_inf["parsed"][coin.name]["profit_1mhs"]
             usd_per_coin = coins_inf["parsed"][coin.name]["usd_per_coin"]
             w = cards_inf["parsed"][key.name][coin.name]["pwr"]
 
-            print(profit_1mhs, usd_per_coin, w)
+            # print(profit_1mhs, usd_per_coin, w)
             
             profit[coin][1] = profit[coin][0] * profit_1mhs
             profit[coin][2] = profit[coin][1] * usd_per_coin
@@ -133,7 +133,7 @@ def calc_asics_config_profit(config: dict(), elec_price: float):
             coinname = el.text
             for coin in CryptoCoin.objects.all():
                 if (coinname == coin.name):
-                    print("found", coin.name)
+                    # print("found", coin.name)
                     profit[asics][coin] = [0, 0, 0, 0, 0]
                     coins.append(coin)
 
@@ -164,3 +164,24 @@ def calc_asics_config_profit(config: dict(), elec_price: float):
             profit[asics][coin][4] += (quantity * watts[i] * 24 / 1000 * elec_price) / usd_per_coin
             
     return profit
+
+
+def make_offer(config) -> dict():
+    res = dict()
+    for el in config.keys():
+        if (config[el] > 0):
+            url = "https://n-katalog.ru/search?keyword=" + el.name.replace(' ', '+')
+            req = requests.get(url)
+            raw_text = bs(req.text, features="html.parser")
+            price_list = raw_text.find_all("div", {"class", "model-price-range"})
+            l = []
+            for it in price_list:
+                a = it.find_all('a', href=True)[0]
+                price = int(a.text.split()[0])
+                link = "https://n-katalog.ru" + a['href']
+                if (price > 0): l.append((price, link))
+                # print(int(a.text.split()[0]), a['href'])
+                # print(a)
+            l.sort()
+            if (l.__sizeof__() > 0): res[el] = l[0]
+    return res

@@ -6,7 +6,7 @@ from .presenters import *
 from django.forms import formset_factory
 import requests
 from bs4 import BeautifulSoup as bs
-from .calculators import calc_config_profit, calc_asics_config_profit, calc_duals_config_profit
+from .calculators import calc_config_profit, calc_asics_config_profit, calc_duals_config_profit, make_offer
 
 def main_page(request):
     return render(request, 'main_page.html')
@@ -67,6 +67,9 @@ def calc_profit_page(request):
 
             raw_profit = calc_config_profit(config, data["elec"])
             raw_duals_profit = calc_duals_config_profit(raw_profit, config, data["elec"])
+            raw_offer = make_offer(config)
+            print(raw_offer)
+            data["prices"] = raw_offer
             data["profit"] = make_table_vc(data, raw_profit)
             data["duals"] = make_duals_table(raw_duals_profit, data)
         
@@ -124,15 +127,15 @@ def calc_asics_profit_page(request):
                         s = el.split(' ')
                         vcl.pop(int(s[1]) - 1)
         elif ("sbm" in request.POST):
-            print(request.POST)
+            # print(request.POST)
 
             config = dict()
             for el in Asics.objects.all(): config[el] = 0
             for el in vcl:
                 config[Asics.objects.all()[int(el.get_query(request.POST, "cards"))]] += int(el.get_query(request.POST, "quantity"))
             
-            for key, val in config.items():
-                print(key.hashrate_no_code, val)
+            # for key, val in config.items():
+            #     print(key.hashrate_no_code, val)
 
             raw_profit = calc_asics_config_profit(config, data["elec"])
             data["raw"] = raw_profit
