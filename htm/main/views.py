@@ -67,8 +67,9 @@ def calc_profit_page(request):
 
             raw_profit = calc_config_profit(config, data["elec"])
             raw_duals_profit = calc_duals_config_profit(raw_profit, config, data["elec"])
-            raw_offer = make_offer(config)
-            print(raw_offer)
+            raw_offer, exist = make_offer(config)
+            # print(raw_offer)
+            data["exists"] = exist
             data["prices"] = raw_offer
             data["profit"] = make_table_vc(data, raw_profit)
             data["duals"] = make_duals_table(raw_duals_profit, data)

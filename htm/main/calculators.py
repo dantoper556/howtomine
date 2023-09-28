@@ -167,7 +167,10 @@ def calc_asics_config_profit(config: dict(), elec_price: float) -> dict():
 
 
 def make_offer(config) -> dict():
+    pr_g = requests.get("https://exchange-rates.abstractapi.com/v1/live/?api_key=6f5477586faa4c1f9a33ecf8f1aa5f64&base=USD&target=RUB")
+    usd_rub = pr_g.json()['exchange_rates']['RUB']
     res = dict()
+    status = 1
     for el in config.keys():
         if (config[el] > 0):
             url = "https://n-katalog.ru/search?keyword=" + el.name.replace(' ', '+')
@@ -179,9 +182,10 @@ def make_offer(config) -> dict():
                 a = it.find_all('a', href=True)[0]
                 price = int(a.text.split()[0])
                 link = "https://n-katalog.ru" + a['href']
-                if (price > 0): l.append((price, link))
+                if (price > 0): l.append((round(price / usd_rub, 2), link))
                 # print(int(a.text.split()[0]), a['href'])
                 # print(a)
             l.sort()
-            if (l.__sizeof__() > 0): res[el] = l[0]
-    return res
+            if (len(l) > 0): res[el] = l[0]
+            else: status = 0
+    return (res, status)

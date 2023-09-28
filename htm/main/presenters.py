@@ -18,7 +18,7 @@ def make_table_vc(data: dict, raw_profit: dict) -> dict:
             "clear_prf_coin": f'{(round(val[1] - val[4], 2))} {coin.hashrate_no_code}',
             "mnh_clear_prf_coin": f'{(round(val[1] * 30 - val[4] * 30, 2))} {coin.hashrate_no_code}',
         })
-    profit.sort(key=lambda a: float(a["clear_prf_coin"].split()[0]), reverse=True)
+    profit.sort(key=lambda a: float(a["clear_prf_usd"].split()[0]), reverse=True)
 
     return profit
 
