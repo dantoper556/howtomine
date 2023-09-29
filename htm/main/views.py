@@ -12,7 +12,18 @@ def main_page(request):
     return render(request, 'main_page.html')
 
 def make_conf_page(request):
-    return render(request, 'make_conf_page.html')
+    data = {}
+
+    config = {}
+    for el in VideoCard.objects.all():
+        config[el] = 1
+    cards, exist = make_offer(config)
+    for card in cards:
+        prof = calc_config_profit({card: 1}, 0)
+        print(prof)
+    data["cards"] = cards
+    print(cards)
+    return render(request, 'make_conf_page.html', context=data)
 
 def calc_profit_page(request):
     class VCParser:
@@ -73,6 +84,22 @@ def calc_profit_page(request):
             data["prices"] = raw_offer
             data["profit"] = make_table_vc(data, raw_profit)
             data["duals"] = make_duals_table(raw_duals_profit, data)
+            data["total_price"] = 0
+            data["payback"] = 0
+            if (exist):
+                for card in config.keys():
+                    if (config[card] > 0):
+                        # print(card, ":", raw_offer[card])
+                        data["total_price"] += config[card] * raw_offer[card][0]
+                mx = 0
+                for l in data["profit"]:
+                    mx = max(mx, float(l["clear_prf_usd"].split()[0]))
+                print(mx)
+                if (mx == 0):
+                    data["payback"] = -1
+                else:
+                    data["payback"] = round(data["total_price"] / mx)
+                # print(data["profit"])
         
         data["forms"].extra = data["cnt"]
         tl, tq = [], []

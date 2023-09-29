@@ -189,15 +189,22 @@
             {% endfor %}
         </div>
 
+        <h2 id="mp_header">Рентабельность</h2>
         {% if exists == 1 %}
-            <h2 id="mp_header">Рентабельность</h2>
             {% for item in prices.items %}
                 <div id="just_text"><strong>{{item.0}}</strong> : от {{item.1.0}} $ <a class="beautiful_btn" href="{{item.1.1}}" target="_blank">Купить</a></div>
                 <br>
             {% endfor %}
+            <br>
+            <div id="just_text"><strong>Суммарная стоимость конфигурации карт</strong> : {{total_price}} $</div>
+            {% if payback == -1 %}
+                <div id="just_text"><strong>Ожидаемый срок окупации</strong> : иди найди работу, конфигурация не окупится никогда </div>
+            {% else %}
+                <div id="just_text"><strong>Ожидаемый срок окупации</strong> : {{payback}} дней</div>
+            {% endif %}
         
         {% else %}
-            <h5>В данный момент такую конфигурацию создать нельзя :((</h5>
+            <h5 id="mp_header">В данный момент такую конфигурацию собрать не получится :((</h5>
         {% endif %}
 
         {% for type in form_vals %}
