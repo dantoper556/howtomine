@@ -6,8 +6,28 @@
     <link rel="stylesheet", href="{% static 'project_base.css' %}">
 </head>
 <body>
-    <a class="a1" id="back_btn" href="/">Назад</a>
-    <!-- {% static 'project_base.css' %} -->
-    <h1 id="mp_header">Подбор конфигурации по бюджету</h1>
+    <div>
+        <a class="a1" id="back_btn" href="/">Назад</a>
+        <!-- {% static 'project_base.css' %} -->
+        <h1 id="mp_header">Подбор конфигурации по бюджету</h1>
+        <form class="forms" method="POST">
+            <div class="form">
+                <label>Цена электроэнергии, $/kWh</label>
+                <input type="number" step="0.00001" name="electricity" value="0.1">
+            </div>
+            <div class="form">
+                <label>Бюджет, $</label>
+                <input type="number" step="1" name="budget" value="1000">
+            </div>
+            <div class="form">
+                <label>Макс. количество карт (0, если неважно)</label>
+                <input type="number" step="1" name="cnt" value="0" min="0">
+            </div>
+            
+            {% csrf_token %}
+            <button name="sbm" class="beautiful_btn" type="submit">Рассчитать</button>
+        </form>
+    </div>
+    
     {{cards}}
 </body>

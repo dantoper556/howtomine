@@ -57,6 +57,39 @@ def update_jsons():
 
     json.dump(dat, open("./main/jsons/cards.json", 'w'))
 
+    f3 = open("./main/jsons/vcards.json", 'r')
+    usd_rub = 100
+    res = {}
+    dat = dict(json.load(f3))
+    res = dat
+    last_upd = dat["time"]
+    if (time.time() - last_upd > 3600):
+        pr_g = requests.get("https://exchange-rates.abstractapi.com/v1/live/?api_key=6f5477586faa4c1f9a33ecf8f1aa5f64&base=USD&target=RUB")
+        print(pr_g)
+        usd_rub = pr_g.json()['exchange_rates']['RUB']
+        res["usd_rub"] = usd_rub
+    print(list(dat.keys()))
+    print(time.time() - last_upd > 3600)
+    for el in VideoCard.objects.all():
+        if (time.time() - last_upd > 3600 or str(el) not in dat.keys()):
+            url = "https://n-katalog.ru/search?keyword=" + el.name.replace(' ', '+')
+            req = requests.get(url)
+            raw_text = bs(req.text, features="html.parser")
+            price_list = raw_text.find_all("div", {"class", "model-price-range"})
+            l = []
+            for it in price_list:
+                a = it.find_all('a', href=True)[0]
+                price = int(a.text.split()[0])
+                link = "https://n-katalog.ru" + a['href']
+                if (price > 0): l.append((round(price / res["usd_rub"], 2), link))
+                # print(int(a.text.split()[0]), a['href'])
+                # print(a)
+            l.sort()
+            if (len(l) > 0): res[str(el)] = l[0]
+            else: res[str(el)] = "-"
+            res["time"] = time.time()
+            print(el)
+    json.dump(res, open("./main/jsons/vcards.json", 'w'))
 
 
 def calc_config_profit(config: dict(), elec_price: float) -> dict():
@@ -167,25 +200,15 @@ def calc_asics_config_profit(config: dict(), elec_price: float) -> dict():
 
 
 def make_offer(config) -> dict():
-    pr_g = requests.get("https://exchange-rates.abstractapi.com/v1/live/?api_key=6f5477586faa4c1f9a33ecf8f1aa5f64&base=USD&target=RUB")
-    usd_rub = pr_g.json()['exchange_rates']['RUB']
+    update_jsons()
+
     res = dict()
     status = 1
+    f = open("./main/jsons/vcards.json", 'r')
+    dat = dict(json.load(f))
     for el in config.keys():
         if (config[el] > 0):
-            url = "https://n-katalog.ru/search?keyword=" + el.name.replace(' ', '+')
-            req = requests.get(url)
-            raw_text = bs(req.text, features="html.parser")
-            price_list = raw_text.find_all("div", {"class", "model-price-range"})
-            l = []
-            for it in price_list:
-                a = it.find_all('a', href=True)[0]
-                price = int(a.text.split()[0])
-                link = "https://n-katalog.ru" + a['href']
-                if (price > 0): l.append((round(price / usd_rub, 2), link))
-                # print(int(a.text.split()[0]), a['href'])
-                # print(a)
-            l.sort()
-            if (len(l) > 0): res[el] = l[0]
-            else: status = 0
+            l = dat[str(el)]
+            if (l == '-'): status = 0
+            else: res[el] = l
     return (res, status)

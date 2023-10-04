@@ -18,11 +18,10 @@ def make_conf_page(request):
     for el in VideoCard.objects.all():
         config[el] = 1
     cards, exist = make_offer(config)
-    for card in cards:
-        prof = calc_config_profit({card: 1}, 0)
-        print(prof)
+    if (request.method == "POST"):
+        print(request.POST)
+    
     data["cards"] = cards
-    print(cards)
     return render(request, 'make_conf_page.html', context=data)
 
 def calc_profit_page(request):
@@ -94,6 +93,8 @@ def calc_profit_page(request):
                 mx = 0
                 for l in data["profit"]:
                     mx = max(mx, float(l["clear_prf_usd"].split()[0]))
+                for l in data["duals"]:
+                    mx = max(mx, float(l["clear_prf_usd"]))
                 print(mx)
                 if (mx == 0):
                     data["payback"] = -1

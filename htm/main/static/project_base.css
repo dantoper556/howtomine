@@ -71,7 +71,7 @@ body {
 .a1:hover {
     /* text settings */
     color: #073b4c;
-    background-color: #cccccc;
+    background-color: white;
     /* block style settings */
     /* box-shadow: 0px 0px 5px rgba(255, 255, 255, 0.5); */
     
@@ -85,6 +85,29 @@ body {
 
 #just_text {
     padding-left: 2%;
+}
+
+#id_form-0-electricity {
+    display: block;
+    margin-bottom: 10px;
+}
+label {
+    margin: 0px;
+}
+
+#extraforms {
+    margin-bottom: 10px;
+    margin-left: 2%;
+}
+
+input {
+    border-radius: 5px;
+    border: none;
+    width: fit-content;
+    padding: 5px;
+    margin-left: 10px;
+    background-color: #474747;
+    color: white;
 }
 
 #back_btn {
