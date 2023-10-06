@@ -13,15 +13,89 @@ def main_page(request):
 
 def make_conf_page(request):
     data = {}
+    data["elec"] = 0.1
+    data["budget"] = 1000.0
+    data["cnt"] = 0
 
     config = {}
     for el in VideoCard.objects.all():
         config[el] = 1
     cards, exist = make_offer(config)
     if (request.method == "POST"):
-        print(request.POST)
+        data["elec"] = float(request.POST["electricity"])
+        data["budget"] = float(request.POST["budget"])
+        data["cnt"] = int(request.POST["cnt"])
     
+    # print(":", cards)
+    vals = dict()
+    srt_l = []
+    for el in cards.keys():
+        t = dict()
+        t[el] = 1
+        w = float(make_table_vc(data, calc_config_profit(t, data["elec"]))[0]["clear_prf_usd"].split()[0])
+        # print(":", el, w)
+        vals[el] = [w, cards[el][0]]
+        srt_l.append([w / cards[el][0], el])
+
+    cnt = data["cnt"]
+    if (cnt == 0):
+        cnt = 1e9
+
     data["cards"] = cards
+    srt_l.sort(reverse=True)
+    res = dict()
+    for el in VideoCard.objects.all():
+        res[el] = 0
+    res[srt_l[0][1]] = min(cnt, data["budget"] // vals[srt_l[0][1]][1])
+    rcnt = res[srt_l[0][1]]
+    left = data["budget"] - rcnt * vals[srt_l[0][1]][1]
+    while (1):
+        ok = 0
+        for el in res.keys():
+            for nw in cards.keys():
+                if (res[el] > 0):
+                    if (left + cards[el][0] - cards[nw][0] > 0):
+                        if (vals[nw] > vals[el]):
+                            res[el] -= 1
+                            res[nw] += 1
+                            ok = 1
+                            left += cards[el][0] - cards[nw][0]
+        if (ok == 0):
+            break
+    
+    clc_f = calc_config_profit(res, data["elec"])
+    clc_f_d = calc_duals_config_profit(clc_f, res, data["elec"])
+    raw_offer, exist = make_offer(res)
+    data["profit"] = make_table_vc(data, clc_f)
+    data["duals"] = make_duals_table(clc_f_d, data)
+    data["total_price"] = 0
+    data["payback"] = 0
+    data["exists"] = exist
+    data["prices"] = raw_offer
+    # print(exist)
+    if (exist):
+        for card in res.keys():
+            if (res[card] > 0):
+                data["total_price"] += round(res[card] * raw_offer[card][0], 2)
+        mx = 0
+        for l in data["profit"]:
+            mx = max(mx, float(l["clear_prf_usd"].split()[0]))
+        for l in data["duals"]:
+            mx = max(mx, float(l["clear_prf_usd"]))
+        # print(mx)
+        if (mx == 0):
+            data["payback"] = -1
+        else:
+            data["payback"] = round(data["total_price"] / mx + 1)
+    # print(left, data["budget"], rcnt)
+
+    # print(srt_l)
+
+    resl = []
+    for el in res.keys():
+        if (res[el] > 0):
+            resl.append([str(el), int(res[el])])
+    data["res"] = resl
     return render(request, 'make_conf_page.html', context=data)
 
 def calc_profit_page(request):
@@ -78,7 +152,6 @@ def calc_profit_page(request):
             raw_profit = calc_config_profit(config, data["elec"])
             raw_duals_profit = calc_duals_config_profit(raw_profit, config, data["elec"])
             raw_offer, exist = make_offer(config)
-            # print(raw_offer)
             data["exists"] = exist
             data["prices"] = raw_offer
             data["profit"] = make_table_vc(data, raw_profit)
@@ -88,7 +161,6 @@ def calc_profit_page(request):
             if (exist):
                 for card in config.keys():
                     if (config[card] > 0):
-                        # print(card, ":", raw_offer[card])
                         data["total_price"] += config[card] * raw_offer[card][0]
                 mx = 0
                 for l in data["profit"]:
@@ -100,7 +172,6 @@ def calc_profit_page(request):
                     data["payback"] = -1
                 else:
                     data["payback"] = round(data["total_price"] / mx)
-                # print(data["profit"])
         
         data["forms"].extra = data["cnt"]
         tl, tq = [], []
@@ -156,15 +227,10 @@ def calc_asics_profit_page(request):
                         s = el.split(' ')
                         vcl.pop(int(s[1]) - 1)
         elif ("sbm" in request.POST):
-            # print(request.POST)
-
             config = dict()
             for el in Asics.objects.all(): config[el] = 0
             for el in vcl:
                 config[Asics.objects.all()[int(el.get_query(request.POST, "cards"))]] += int(el.get_query(request.POST, "quantity"))
-            
-            # for key, val in config.items():
-            #     print(key.hashrate_no_code, val)
 
             raw_profit = calc_asics_config_profit(config, data["elec"])
             data["raw"] = raw_profit

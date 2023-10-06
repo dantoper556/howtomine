@@ -4,8 +4,18 @@
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
     <link rel="stylesheet", href="{% static 'project_base.css' %}">
+    <script>
+        function on_page_init() {
+            var inp = document.querySelector("input[name='electricity']");
+            inp.value = "{{elec}}";
+            inp = document.querySelector("input[name='budget']");
+            inp.value = "{{budget}}";
+            inp = document.querySelector("input[name='cnt']");
+            inp.value = "{{cnt}}";
+        }
+    </script>
 </head>
-<body>
+<body onload="on_page_init()">
     <div>
         <a class="a1" id="back_btn" href="/">Назад</a>
         <!-- {% static 'project_base.css' %} -->
@@ -17,7 +27,7 @@
             </div>
             <div class="form">
                 <label>Бюджет, $</label>
-                <input type="number" step="1" name="budget" value="1000">
+                <input type="number" step="1" name="budget" value="1000" min="0">
             </div>
             <div class="form">
                 <label>Макс. количество карт (0, если неважно)</label>
@@ -27,7 +37,141 @@
             {% csrf_token %}
             <button name="sbm" class="beautiful_btn" type="submit">Рассчитать</button>
         </form>
+        
+        <h2 id="mp_header">Подобранная конфигурация</h2>
+        {% for el in res %}
+            <div id="just_text"><strong>{{el.0}}</strong> : {{el.1}} шт.</div>
+            <br>
+        {% endfor %}
+
+        <h2 id="mp_header">Таблица прибыли</h2>
+        <div class="profit_tbl">
+            <div class="profit_tbl_row">
+                <div id="tbl_head" class="profit_tbl_col">
+                    Монета
+                </div>
+                <div id="tbl_head" class="profit_tbl_col">
+                    Хешрейт фермы
+                </div>
+                <div id="tbl_head" class="profit_tbl_col">
+                    Доход<br> 24ч | 30д
+                </div>
+                <div id="tbl_head" class="profit_tbl_col">
+                    Потребление электроэнергии<br> 24ч | 30д
+                </div>
+                <div id="tbl_head" class="profit_tbl_col">
+                    Прибыль<br> 24ч | 30д
+                </div>
+                <div id="tbl_head" class="profit_tbl_col">
+                    Параметры разгона
+                </div>
+            </div>
+            {% for val in profit %}
+                <div class="profit_tbl_row">
+                    <div class="profit_tbl_col">
+                            {{val.coin}}
+                        </div>
+                        <div class="profit_tbl_col">
+                            {{val.hsh}}
+                        </div>
+                        <div class="profit_tbl_col" id="mulcol">
+                            <div id="c1">{{val.prf_coin}}</div>
+                            <div id="c3">{{val.mnh_prf_coin}}</div>
+                            <div id="c2">{{val.prf_usd}}</div>
+                            <div id="c4">{{val.mnh_prf_usd}}</div>
+                        </div>
+                        <div class="profit_tbl_col" id="mulcol">
+                            <div id="c1">{{val.pwr_cons}}</div>
+                            <div id="c3">{{val.mnh_pwr_cons}}</div>
+                            <div id="c2">{{val.pwr_cons_usd}}</div>
+                            <div id="c4">{{val.mnh_pwr_cons_usd}}</div>
+                        </div>
+                        <div class="profit_tbl_col" id="mulcol">
+                            <div id="c1">{{val.clear_prf_coin}}</div>
+                            <div id="c3">{{val.mnh_clear_prf_coin}}</div>
+                            <div id="c2">{{val.clear_prf_usd}}</div>
+                            <div id="c4">{{val.mnh_clear_prf_usd}}</div>
+                        </div>
+                </div>
+            {% endfor %}
+        </div>
+        <!-- <br> -->
+        <h2 id="mp_header">Таблица прибыли при дуал-майнинге</h2>
+        <div class="profit_tbl">
+            <div class="profit_tbl_row">
+                <div id="tbl_head" class="profit_tbl_col">
+                    Монета
+                </div>
+                <div id="tbl_head" class="profit_tbl_col">
+                    Хешрейт фермы
+                </div>
+                <div id="tbl_head" class="profit_tbl_col">
+                    Доход<br> 24ч | 30д
+                </div>
+                <div id="tbl_head" class="profit_tbl_col">
+                    Потребление электроэнергии<br> 24ч | 30д
+                </div>
+                <div id="tbl_head" class="profit_tbl_col">
+                    Прибыль<br> 24ч | 30д
+                </div>
+                <div id="tbl_head" class="profit_tbl_col">
+                    Параметры разгона
+                </div>
+            </div>
+            {% for val in duals %}
+                <div class="profit_tbl_row">
+                    <div class="profit_tbl_col">
+                        {{val.par}}
+                    </div>
+                    <div class="profit_tbl_col" id="mulcol">
+                        <div id="c1">{{val.name.0}}:</div>
+                        <div id="c3">{{val.name.1}}:</div>
+                        <div id="c2">{{val.par_spl.0}} Mh/s</div>
+                        <div id="c4">{{val.par_spl.1}} Mh/s</div>
+                    </div>
+                    <div class="profit_tbl_col" id="mulcol">
+                        <div id="c1">В день:</div>
+                        <div id="c3">В месяц:</div>
+                        <div id="c2">{{val.prf_usd}} $</div>
+                        <div id="c4">{{val.mnh_prf_usd}} $</div>
+                    </div>
+                    <div class="profit_tbl_col" id="mulcol">
+                        <div id="c1">{{val.pwr_cons}} kWh</div>
+                        <div id="c3">{{val.mnh_pwr_cons}} kWh</div>
+                        <div id="c2">{{val.pwr_cons_usd}} $</div>
+                        <div id="c4">{{val.mnh_pwr_cons_usd}} $</div>
+                    </div>
+                    <div class="profit_tbl_col" id="mulcol">
+                        <div id="c1">В день:</div>
+                        <div id="c3">В месяц:</div>
+                        <div id="c2">{{val.clear_prf_usd}} $</div>
+                        <div id="c4">{{val.mnh_clear_prf_usd}} $</div>
+                    </div>
+                    <div class="profit_tbl_col" id="mulcol">
+                        <div id="c1">dual intensity</div>
+                        <div id="c3"></div>
+                        <div id="c2">{{val.di}}</div>
+                        <div id="c4"></div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        
+        <h2 id="mp_header">Рентабельность</h2>
+        {% if exists == 1 %}
+            {% for item in prices.items %}
+                <div id="just_text"><strong>{{item.0}}</strong> : от {{item.1.0}} $ <a class="beautiful_btn" href="{{item.1.1}}" target="_blank">Купить</a></div>
+                <br>
+            {% endfor %}
+            <br>
+            <div id="just_text"><strong>Суммарная стоимость конфигурации карт</strong> : {{total_price}} $</div>
+            {% if payback == -1 %}
+                <div id="just_text"><strong>Ожидаемый срок окупации</strong> : иди найди работу, конфигурация не окупится никогда </div>
+            {% else %}
+                <div id="just_text"><strong>Ожидаемый срок окупации</strong> : {{payback}} дней</div>
+            {% endif %}
+        {% else %}
+            <h5 id="mp_header">В данный момент такую конфигурацию собрать не получится :((</h5>
+        {% endif %}
     </div>
-    
-    {{cards}}
 </body>

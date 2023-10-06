@@ -65,11 +65,11 @@ def update_jsons():
     last_upd = dat["time"]
     if (time.time() - last_upd > 3600):
         pr_g = requests.get("https://exchange-rates.abstractapi.com/v1/live/?api_key=6f5477586faa4c1f9a33ecf8f1aa5f64&base=USD&target=RUB")
-        print(pr_g)
+        # print(pr_g)
         usd_rub = pr_g.json()['exchange_rates']['RUB']
         res["usd_rub"] = usd_rub
-    print(list(dat.keys()))
-    print(time.time() - last_upd > 3600)
+    # print(list(dat.keys()))
+    # print(time.time() - last_upd > 3600)
     for el in VideoCard.objects.all():
         if (time.time() - last_upd > 3600 or str(el) not in dat.keys()):
             url = "https://n-katalog.ru/search?keyword=" + el.name.replace(' ', '+')
@@ -208,6 +208,7 @@ def make_offer(config) -> dict():
     dat = dict(json.load(f))
     for el in config.keys():
         if (config[el] > 0):
+            # print(el)
             l = dat[str(el)]
             if (l == '-'): status = 0
             else: res[el] = l
