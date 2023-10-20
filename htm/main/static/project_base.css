@@ -213,6 +213,7 @@ option:hover {
 }
 
 .beautiful_btn {
+    width: fit-content;
     margin-left: 2%;
     padding: 10px;
     border: none;
@@ -227,4 +228,39 @@ option:hover {
     background-color: #cccccc;
     color: #333333;
     transition: .3s;
+}
+
+.card {
+    width: 15vw;
+    height: 85%;
+    background-color: #1e1e1e;
+    font-size: 15px;
+    border: 1px solid #ccc;
+    align-items: center;
+    padding: 2vw;
+    text-align: center;
+    margin: 1vw;
+    /* display: flex; */
+}
+
+#shops_list {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    /* display: grid; */
+}
+
+#diver {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 0.5fr 1fr;
+}
+
+#params {
+    width: 100%;
+    background-color: #1e1e1e;
+    height: 100%;
+    padding: 1vw;
+    border-radius: 2%;
+    padding-left: 2vw;
 }

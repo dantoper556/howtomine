@@ -25,4 +25,5 @@ urlpatterns = [
     path('builder/', make_conf_page),
     path('calc/', calc_profit_page),
     path('calc_asics/', calc_asics_profit_page),
+    path('shops/', present_cards),
 ]

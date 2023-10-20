@@ -7,6 +7,7 @@ from django.forms import formset_factory
 import requests
 from bs4 import BeautifulSoup as bs
 from .calculators import calc_config_profit, calc_asics_config_profit, calc_duals_config_profit, make_offer
+import json
 
 def main_page(request):
     return render(request, 'main_page.html')
@@ -43,6 +44,9 @@ def make_conf_page(request):
 
     data["cards"] = cards
     srt_l.sort(reverse=True)
+    print(srt_l)
+    data["status"] = 0
+    if (srt_l[0][0] < 0): data["status"] = 1
     res = dict()
     for el in VideoCard.objects.all():
         res[el] = 0
@@ -245,3 +249,12 @@ def calc_asics_profit_page(request):
         data["form_quant"] = tq
     
     return render(request, 'calc_asics_profit_page.html', context=data)
+
+
+def present_cards(request):
+    data = dict()
+    f3 = open("./main/jsons/vcards.json", 'r')
+    data["vcards_list"] = dict(json.load(f3))
+    data["vcards_list"].pop("time")
+    data["vcards_list"].pop("usd_rub")
+    return render(request, 'present_all.html', context=data)

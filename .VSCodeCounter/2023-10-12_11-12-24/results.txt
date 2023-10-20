@@ -1,0 +1,73 @@
+Date : 2023-10-12 11:12:24
+Directory : c:\Users\vyach\OneDrive\Документы\GitHub\howtomine
+Total : 35 files,  1566 codes, 116 comments, 291 blanks, all 1973 lines
+
+Languages
++----------+------------+------------+------------+------------+------------+
+| language | files      | code       | comment    | blank      | total      |
++----------+------------+------------+------------+------------+------------+
+| Python   |         23 |        709 |         90 |        197 |        996 |
+| HTML     |          4 |        532 |          5 |         38 |        575 |
+| CSS      |          2 |        175 |         21 |         35 |        231 |
+| Markdown |          2 |        146 |          0 |         21 |        167 |
+| JSON     |          4 |          4 |          0 |          0 |          4 |
++----------+------------+------------+------------+------------+------------+
+
+Directories
++------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                       | files      | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                          |         35 |      1,566 |        116 |        291 |      1,973 |
+| . (Files)                                                                                                  |          2 |        146 |          0 |         21 |        167 |
+| htm                                                                                                        |         33 |      1,420 |        116 |        270 |      1,806 |
+| htm (Files)                                                                                                |          1 |         15 |          3 |          5 |         23 |
+| htm\htm                                                                                                    |          5 |         90 |         58 |         46 |        194 |
+| htm\main                                                                                                   |         27 |      1,315 |         55 |        219 |      1,589 |
+| htm\main (Files)                                                                                           |          9 |        509 |         22 |        102 |        633 |
+| htm\main\jsons                                                                                             |          4 |          4 |          0 |          0 |          4 |
+| htm\main\migrations                                                                                        |          8 |         95 |          7 |         44 |        146 |
+| htm\main\static                                                                                            |          2 |        175 |         21 |         35 |        231 |
+| htm\main\templates                                                                                         |          4 |        532 |          5 |         38 |        575 |
++------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| filename                                                                                                   | language | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| c:\Users\vyach\OneDrive\Документы\GitHub\howtomine\htm\htm\__init__.py                                     | Python   |          0 |          0 |          1 |          1 |
+| c:\Users\vyach\OneDrive\Документы\GitHub\howtomine\htm\htm\asgi.py                                         | Python   |          4 |          8 |          5 |         17 |
+| c:\Users\vyach\OneDrive\Документы\GitHub\howtomine\htm\htm\settings.py                                     | Python   |         70 |         27 |         33 |        130 |
+| c:\Users\vyach\OneDrive\Документы\GitHub\howtomine\htm\htm\urls.py                                         | Python   |         12 |         15 |          2 |         29 |
+| c:\Users\vyach\OneDrive\Документы\GitHub\howtomine\htm\htm\wsgi.py                                         | Python   |          4 |          8 |          5 |         17 |
+| c:\Users\vyach\OneDrive\Документы\GitHub\howtomine\htm\main\__init__.py                                    | Python   |          0 |          0 |          1 |          1 |
+| c:\Users\vyach\OneDrive\Документы\GitHub\howtomine\htm\main\admin.py                                       | Python   |          6 |          1 |          4 |         11 |
+| c:\Users\vyach\OneDrive\Документы\GitHub\howtomine\htm\main\apps.py                                        | Python   |          4 |          0 |          3 |          7 |
+| c:\Users\vyach\OneDrive\Документы\GitHub\howtomine\htm\main\calculators.py                                 | Python   |        166 |         11 |         39 |        216 |
+| c:\Users\vyach\OneDrive\Документы\GitHub\howtomine\htm\main\forms.py                                       | Python   |         14 |          2 |          4 |         20 |
+| c:\Users\vyach\OneDrive\Документы\GitHub\howtomine\htm\main\jsons\asics.json                               | JSON     |          1 |          0 |          0 |          1 |
+| c:\Users\vyach\OneDrive\Документы\GitHub\howtomine\htm\main\jsons\cards.json                               | JSON     |          1 |          0 |          0 |          1 |
+| c:\Users\vyach\OneDrive\Документы\GitHub\howtomine\htm\main\jsons\coins.json                               | JSON     |          1 |          0 |          0 |          1 |
+| c:\Users\vyach\OneDrive\Документы\GitHub\howtomine\htm\main\jsons\vcards.json                              | JSON     |          1 |          0 |          0 |          1 |
+| c:\Users\vyach\OneDrive\Документы\GitHub\howtomine\htm\main\migrations\0001_initial.py                     | Python   |         14 |          1 |          7 |         22 |
+| c:\Users\vyach\OneDrive\Документы\GitHub\howtomine\htm\main\migrations\0002_videocard_hashrate_no_code.py  | Python   |         13 |          1 |          6 |         20 |
+| c:\Users\vyach\OneDrive\Документы\GitHub\howtomine\htm\main\migrations\0003_cryptocoin.py                  | Python   |         14 |          1 |          6 |         21 |
+| c:\Users\vyach\OneDrive\Документы\GitHub\howtomine\htm\main\migrations\0004_cryptocoin_hashrate_no_code.py | Python   |         13 |          1 |          6 |         20 |
+| c:\Users\vyach\OneDrive\Документы\GitHub\howtomine\htm\main\migrations\0005_asics.py                       | Python   |         15 |          1 |          6 |         22 |
+| c:\Users\vyach\OneDrive\Документы\GitHub\howtomine\htm\main\migrations\0006_duals.py                       | Python   |         14 |          1 |          6 |         21 |
+| c:\Users\vyach\OneDrive\Документы\GitHub\howtomine\htm\main\migrations\0007_rename_first_duals_pair.py     | Python   |         12 |          1 |          6 |         19 |
+| c:\Users\vyach\OneDrive\Документы\GitHub\howtomine\htm\main\migrations\__init__.py                         | Python   |          0 |          0 |          1 |          1 |
+| c:\Users\vyach\OneDrive\Документы\GitHub\howtomine\htm\main\models.py                                      | Python   |         20 |          1 |          8 |         29 |
+| c:\Users\vyach\OneDrive\Документы\GitHub\howtomine\htm\main\presenters.py                                  | Python   |         89 |          0 |          9 |         98 |
+| c:\Users\vyach\OneDrive\Документы\GitHub\howtomine\htm\main\static\calc_profit_page.css                    | CSS      |          0 |          0 |          1 |          1 |
+| c:\Users\vyach\OneDrive\Документы\GitHub\howtomine\htm\main\static\project_base.css                        | CSS      |        175 |         21 |         34 |        230 |
+| c:\Users\vyach\OneDrive\Документы\GitHub\howtomine\htm\main\templates\calc_asics_profit_page.html          | HTML     |        123 |          0 |         13 |        136 |
+| c:\Users\vyach\OneDrive\Документы\GitHub\howtomine\htm\main\templates\calc_profit_page.html                | HTML     |        198 |          3 |         16 |        217 |
+| c:\Users\vyach\OneDrive\Документы\GitHub\howtomine\htm\main\templates\main_page.html                       | HTML     |         41 |          0 |          4 |         45 |
+| c:\Users\vyach\OneDrive\Документы\GitHub\howtomine\htm\main\templates\make_conf_page.html                  | HTML     |        170 |          2 |          5 |        177 |
+| c:\Users\vyach\OneDrive\Документы\GitHub\howtomine\htm\main\tests.py                                       | Python   |          1 |          1 |          2 |          4 |
+| c:\Users\vyach\OneDrive\Документы\GitHub\howtomine\htm\main\views.py                                       | Python   |        209 |          6 |         32 |        247 |
+| c:\Users\vyach\OneDrive\Документы\GitHub\howtomine\htm\manage.py                                           | Python   |         15 |          3 |          5 |         23 |
+| c:\Users\vyach\OneDrive\Документы\GitHub\howtomine\vkozickiy_application.md                                | Markdown |         69 |          0 |         13 |         82 |
+| c:\Users\vyach\OneDrive\Документы\GitHub\howtomine\vkozickiy_user_scripts.md                               | Markdown |         77 |          0 |          8 |         85 |
+| Total                                                                                                      |          |      1,566 |        116 |        291 |      1,973 |
++------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+

@@ -37,7 +37,10 @@
             {% csrf_token %}
             <button name="sbm" class="beautiful_btn" type="submit">Рассчитать</button>
         </form>
-        
+
+        {% if status %}
+        <h4 id="mp_header">Тут без обид, но тебе следует поискать место с более дешевой электроэнергией</h4>
+        {% else %}
         <h2 id="mp_header">Подобранная конфигурация</h2>
         {% for el in res %}
             <div id="just_text"><strong>{{el.0}}</strong> : {{el.1}} шт.</div>
@@ -172,6 +175,7 @@
             {% endif %}
         {% else %}
             <h5 id="mp_header">В данный момент такую конфигурацию собрать не получится :((</h5>
+        {% endif %}
         {% endif %}
     </div>
 </body>
