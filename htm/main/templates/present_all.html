@@ -4,12 +4,19 @@
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
     <link rel="stylesheet", href="{% static 'project_base.css' %}">
+
+    <script>
+        function sort() {
+            var l = "lksalsk";
+            alert(l);
+        }
+    </script>
 </head>
 <body>
     <div>
         <a class="a1" id="back_btn" href="/">Назад</a>
         <h1 id="mp_header">Список видеокарт и асиков</h1>
-        <!-- {{vcards_list}} -->
+        {{res}}
         <div id="diver">
             <div id="shops_list">
             {% for el in vcards_list.items %}
@@ -28,6 +35,19 @@
             <div>
                 <div id="params">
                     <h4>Параметры сортировки</h4>
+                    <form>
+                        <div>
+                            <input type="radio" id="sort1" name="sort" value="sort1" placeholder="1" />
+                            <label for="sort1">sort1</label>
+                            <br>
+                            <input type="radio" id="sort2" name="sort" value="sort2" />
+                            <label for="sort2">sort2</label>
+                            <br>
+                        </div>
+                        
+                        <!-- {% csrf_token %} -->
+                        <button onclick="sort()">Применить</button>
+                    </form>
                 </div>
             </div>
         </div>

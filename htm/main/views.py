@@ -257,4 +257,10 @@ def present_cards(request):
     data["vcards_list"] = dict(json.load(f3))
     data["vcards_list"].pop("time")
     data["vcards_list"].pop("usd_rub")
+    data["res"] = []
+    if (request.method == "POST"):
+        print("LKSDPK")
+    else: 
+        for k in data["vcards_list"].keys():
+            data["res"].append([k, data["vcards_list"][k]])
     return render(request, 'present_all.html', context=data)

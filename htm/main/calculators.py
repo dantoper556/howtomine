@@ -6,7 +6,7 @@ import time
 from bs4 import BeautifulSoup as bs
 
 def update_jsons():
-    sleep = 36000
+    sleep = 3600
 
     f1 = open("./main/jsons/coins.json")
     dat = json.load(f1)
