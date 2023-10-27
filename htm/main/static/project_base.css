@@ -253,7 +253,7 @@ option:hover {
 #diver {
     width: 100%;
     display: grid;
-    grid-template-columns: 0.5fr 1fr;
+    grid-template-columns: 2fr 1fr;
 }
 
 #params {
@@ -263,4 +263,8 @@ option:hover {
     padding: 1vw;
     border-radius: 2%;
     padding-left: 2vw;
+}
+
+#down_pad {
+    margin-bottom: 1%;
 }

@@ -19,34 +19,43 @@
         {{res}}
         <div id="diver">
             <div id="shops_list">
-            {% for el in vcards_list.items %}
-                <div class="card">
-                    {{el.0}}
-                    <br>
-                    {% if el.1 == '-' %}
-                        Нет в наличии
-                    {% else %}
-                        <p>от {{el.1.0}} $</p>
-                        <a class="beautiful_btn" href="{{el.1.1}}" target="_blank">Купить можно тут</a>
-                    {% endif %}
-                </div>
-            {% endfor %}
+                {% for el in res %}
+                    <div class="card">
+                        {{el.0}}
+                        <br>
+                        {% if el.1 == '-' %}
+                            Нет в наличии
+                        {% else %}
+                            <p>от {{el.1.0}} $</p>
+                            <a class="beautiful_btn" href="{{el.1.1}}" target="_blank">Купить можно тут</a>
+                        {% endif %}
+                    </div>
+                {% endfor %}
             </div>
             <div>
                 <div id="params">
                     <h4>Параметры сортировки</h4>
-                    <form>
+                    <br>
+                    <form method="post">
                         <div>
-                            <input type="radio" id="sort1" name="sort" value="sort1" placeholder="1" />
-                            <label for="sort1">sort1</label>
+                            <input type="radio" id="sort1" name="sort" value="sort1" />
+                            <label for="sort1">Сортровать по возрастанию цены</label>
                             <br>
                             <input type="radio" id="sort2" name="sort" value="sort2" />
-                            <label for="sort2">sort2</label>
+                            <label for="sort2">Сортировать по убыванию цены</label>
+                            <br>
                             <br>
                         </div>
+                        <label>Минимальная цена</label>
+                        <input type="number" step="0.00001" name="minv" value="0.1" min="0" id="down_pad">
+                        <br>
+                        <label>Минимальная цена</label>
+                        <input type="number" step="0.00001" name="maxv" value="1000000000" min="0" id="down_pad">
                         
-                        <!-- {% csrf_token %} -->
-                        <button onclick="sort()">Применить</button>
+                        {% csrf_token %}
+                        <br>
+                        <br>
+                        <button class="beautiful_btn" type="submit">Применить</button>
                     </form>
                 </div>
             </div>

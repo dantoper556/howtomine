@@ -6,8 +6,9 @@ import time
 from bs4 import BeautifulSoup as bs
 
 def update_jsons():
-    sleep = 3600
+    sleep = 360000
 
+    # обновлние json-а с данными о криптовалютах
     f1 = open("./main/jsons/coins.json")
     dat = json.load(f1)
     last_upd = dat["time"]
@@ -26,6 +27,7 @@ def update_jsons():
     
     json.dump(dat, open("./main/jsons/coins.json", 'w'))
 
+    # обновлние json-а с данными о видеокартах
     f2 = open("./main/jsons/cards.json")
     dat = json.load(f2)
     last_upd = dat["time"]
@@ -59,6 +61,7 @@ def update_jsons():
 
     json.dump(dat, open("./main/jsons/cards.json", 'w'))
 
+    # обновлние json-а с данными о ценах видеокарт
     f3 = open("./main/jsons/vcards.json", 'r')
     usd_rub = 100
     res = {}
@@ -67,11 +70,9 @@ def update_jsons():
     last_upd = dat["time"]
     if (time.time() - last_upd > sleep):
         pr_g = requests.get("https://exchange-rates.abstractapi.com/v1/live/?api_key=6f5477586faa4c1f9a33ecf8f1aa5f64&base=USD&target=RUB")
-        # print(pr_g)
         usd_rub = pr_g.json()['exchange_rates']['RUB']
         res["usd_rub"] = usd_rub
-    # print(list(dat.keys()))
-    # print(time.time() - last_upd > 3600)
+        
     for el in VideoCard.objects.all():
         if (time.time() - last_upd > sleep or str(el) not in dat.keys()):
             url = "https://n-katalog.ru/search?keyword=" + el.name.replace(' ', '+')
@@ -105,18 +106,15 @@ def calc_config_profit(config: dict(), elec_price: float) -> dict():
     cards_inf = json.load(f2)
 
     profit = dict()
+    # [монета] = [хэшрейт, доходность фермы, потребление, расход на электроэнергию] (в день)
     for obj in CryptoCoin.objects.all(): profit[obj] = [0, 0, 0, 0, 0]
     for key, quantity in config.items():
         for coin in CryptoCoin.objects.all():
-            # print(key.name, coin.name, cards_inf["parsed"][key.name][coin.name], coins_inf["parsed"][coin.name])
-            # print(key, quantity)
             profit[coin][0] += cards_inf["parsed"][key.name][coin.name]["hsh"] * quantity
 
             profit_1mhs = coins_inf["parsed"][coin.name]["profit_1mhs"]
             usd_per_coin = coins_inf["parsed"][coin.name]["usd_per_coin"]
             w = cards_inf["parsed"][key.name][coin.name]["pwr"]
-
-            # print(profit_1mhs, usd_per_coin, w)
             
             profit[coin][1] = profit[coin][0] * profit_1mhs
             profit[coin][2] = profit[coin][1] * usd_per_coin
@@ -164,6 +162,7 @@ def calc_asics_config_profit(config: dict(), elec_price: float) -> dict():
         raw_coinname = raw_text.find_all("span", {"class", "deviceHeader"})
         
         coins = []
+        # [асик][монета] = [хэшрейт, доходность фермы, потребление, расход на электроэнергию] (в день)
         for el in raw_coinname:
             coinname = el.text
             for coin in CryptoCoin.objects.all():
@@ -172,6 +171,7 @@ def calc_asics_config_profit(config: dict(), elec_price: float) -> dict():
                     profit[asics][coin] = [0, 0, 0, 0, 0]
                     coins.append(coin)
 
+        # получение хэшрейта
         mhs = []
         parsed_table = raw_text.find_all("td")
         for el in parsed_table:
@@ -179,12 +179,14 @@ def calc_asics_config_profit(config: dict(), elec_price: float) -> dict():
                 hs = float(el.text.split()[0])
                 mhs.append(hs)
 
+        # получение потребления электроэнергии
         watts = []
         parsed_table = raw_text.find_all("td")
         for el in parsed_table:
             if (" w" in str(el.text)):
                 watts.append(float(el.text.split()[0]))
-                
+        
+        
         for i in range(len(coins)):
             coin = coins[i]
             profit[asics][coin][0] += mhs[i] * quantity
@@ -210,7 +212,6 @@ def make_offer(config) -> dict():
     dat = dict(json.load(f))
     for el in config.keys():
         if (config[el] > 0):
-            # print(el)
             l = dat[str(el)]
             if (l == '-'): status = 0
             else: res[el] = l

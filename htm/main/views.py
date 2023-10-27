@@ -9,8 +9,10 @@ from bs4 import BeautifulSoup as bs
 from .calculators import calc_config_profit, calc_asics_config_profit, calc_duals_config_profit, make_offer
 import json
 
+
 def main_page(request):
     return render(request, 'main_page.html')
+
 
 def make_conf_page(request):
     data = {}
@@ -91,9 +93,6 @@ def make_conf_page(request):
             data["payback"] = -1
         else:
             data["payback"] = round(data["total_price"] / mx + 1)
-    # print(left, data["budget"], rcnt)
-
-    # print(srt_l)
 
     resl = []
     for el in res.keys():
@@ -101,6 +100,7 @@ def make_conf_page(request):
             resl.append([str(el), int(res[el])])
     data["res"] = resl
     return render(request, 'make_conf_page.html', context=data)
+
 
 def calc_profit_page(request):
     class VCParser:
@@ -187,6 +187,7 @@ def calc_profit_page(request):
 
     return render(request, 'calc_profit_page.html', context=data)
 
+
 def calc_asics_profit_page(request):
     class VCParser:
         def __init__(self, ind: int, quantity: int = 1) -> None:
@@ -260,6 +261,18 @@ def present_cards(request):
     data["res"] = []
     if (request.method == "POST"):
         print("LKSDPK")
+        ql = float(request.POST["minv"])
+        qr = float(request.POST["maxv"])
+        print(ql, qr)
+        for k in data["vcards_list"].keys():
+            if (data["vcards_list"][k][0] != '-' and ql <= data["vcards_list"][k][0] <= qr):
+                data["res"].append([k, data["vcards_list"][k]])
+        if ("sort" in request.POST.keys()):
+            if (request.POST["sort"] == "sort1"):
+                data["res"].sort(key=lambda a: a[1][0])
+            elif (request.POST["sort"] == "sort2"):
+                data["res"].sort(key=lambda a: a[1][0], reverse=True)
+        print(request.POST)
     else: 
         for k in data["vcards_list"].keys():
             data["res"].append([k, data["vcards_list"][k]])
