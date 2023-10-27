@@ -259,19 +259,24 @@ def present_cards(request):
     data["vcards_list"].pop("time")
     data["vcards_list"].pop("usd_rub")
     data["res"] = []
+    data["sort_pars"] = ""
     if (request.method == "POST"):
-        print("LKSDPK")
         ql = float(request.POST["minv"])
         qr = float(request.POST["maxv"])
-        print(ql, qr)
+        
+        # print(ql, qr)
         for k in data["vcards_list"].keys():
             if (data["vcards_list"][k][0] != '-' and ql <= data["vcards_list"][k][0] <= qr):
                 data["res"].append([k, data["vcards_list"][k]])
+        data["res"].sort(key=lambda a: a[1][0])
         if ("sort" in request.POST.keys()):
             if (request.POST["sort"] == "sort1"):
                 data["res"].sort(key=lambda a: a[1][0])
+                data["sort_pars"] += "Сортровать по возрастанию цены, "
             elif (request.POST["sort"] == "sort2"):
                 data["res"].sort(key=lambda a: a[1][0], reverse=True)
+                data["sort_pars"] += "Сортровать по убыванию цены, "
+        data["sort_pars"] += f"от {ql} $ до {qr} $"
         print(request.POST)
     else: 
         for k in data["vcards_list"].keys():
