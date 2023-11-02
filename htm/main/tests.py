@@ -1,7 +1,7 @@
 from django.test import TestCase
-from .calculators import calc_config_profit
+from .calculators import calc_config_profit, calc_asics_config_profit
 from .models import *
-from .presenters import make_table_vc
+from .presenters import make_table_vc, make_table_asics
 
 class test1(TestCase):
     def setUp(self) -> None:
@@ -21,5 +21,26 @@ class test1(TestCase):
         tbl = make_table_vc(self.data, ret)
         self.assertTrue(abs(float(tbl[0]["hsh"].split()[0]) / (579.2) - 1) < 0.01)
         self.assertTrue(abs(float(tbl[0]["pwr_cons"].split()[0]) / (140 * 10 * 24 / 1000) - 1) < 0.05)
+
+class test2(TestCase):
+    def setUp(self) -> None:
+        self.config = dict()
+        Asics.objects.create(name="JASMINER X16-Q", hashrate_no_code="x16q")
+        for el in Asics.objects.all():
+            if (el.hashrate_no_code == "x16q"):
+                self.config[el] = 10
+        self.data = dict()
+        self.data["elec"] = 0.1
+
+    def test(self):
+        Asics.objects.create(name="JASMINER X16-Q", hashrate_no_code="x16q")
+        CryptoCoin.objects.create(name="Ethereum Classic", hashrate_no_code="ETC")
+        ret = calc_asics_config_profit(self.config, self.data["elec"])
+        tbl = make_table_asics(self.data, ret)
+        # print(tbl['JASMINER X16-Q'][0])
+        self.assertTrue(abs(float(tbl['JASMINER X16-Q'][0]['hsh'].split()[0]) / (1.95 * 10) - 1) < 0.01)
+        self.assertTrue(abs(float(tbl['JASMINER X16-Q'][0]['pwr_cons'].split()[0]) / (15.1 * 10) - 1) < 0.01)
+        # self.assertTrue(abs(float(tbl[0]["pwr_cons"].split()[0]) / (140 * 10 * 24 / 1000) - 1) < 0.05)
+
 
 
