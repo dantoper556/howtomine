@@ -39,7 +39,7 @@
         </form>
 
         {% if status %}
-        <h4 id="mp_header">Тут без обид, но тебе следует поискать место с более дешевой электроэнергией</h4>
+        <h4 id="mp_header">Цена электроэнергии будет больше прибыли для любой конфигурации</h4>
         {% else %}
         <h2 id="mp_header">Подобранная конфигурация</h2>
         {% for el in res %}
@@ -169,9 +169,9 @@
             <br>
             <div id="just_text"><strong>Суммарная стоимость конфигурации карт</strong> : {{total_price}} $</div>
             {% if payback == -1 %}
-                <div id="just_text"><strong>Ожидаемый срок окупации</strong> : иди найди работу, конфигурация не окупится никогда </div>
+                <div id="just_text"><strong>Ожидаемый срок окупаемости</strong> : конфигурация никогда не окупится </div>
             {% else %}
-                <div id="just_text"><strong>Ожидаемый срок окупации</strong> : {{payback}} дней</div>
+                <div id="just_text"><strong>Ожидаемый срок окупаемости</strong> : {{payback}} дней</div>
             {% endif %}
         {% else %}
             <h5 id="mp_header">В данный момент такую конфигурацию собрать не получится :((</h5>

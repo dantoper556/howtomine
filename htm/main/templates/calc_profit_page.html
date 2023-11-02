@@ -198,9 +198,9 @@
             <br>
             <div id="just_text"><strong>Суммарная стоимость конфигурации карт</strong> : {{total_price}} $</div>
             {% if payback == -1 %}
-                <div id="just_text"><strong>Ожидаемый срок окупации</strong> : иди найди работу, конфигурация не окупится никогда </div>
+                <div id="just_text"><strong>Ожидаемый срок окупаемости</strong> : конфигурация никогда не окупится </div>
             {% else %}
-                <div id="just_text"><strong>Ожидаемый срок окупации</strong> : {{payback}} дней</div>
+                <div id="just_text"><strong>Ожидаемый срок окупаемости</strong> : {{payback}} дней</div>
             {% endif %}
         
         {% else %}

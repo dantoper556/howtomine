@@ -8,6 +8,7 @@ import requests
 from bs4 import BeautifulSoup as bs
 from .calculators import calc_config_profit, calc_asics_config_profit, calc_duals_config_profit, make_offer
 import json
+from math import *
 
 
 def main_page(request):
@@ -151,7 +152,7 @@ def calc_profit_page(request):
             config = dict()
             for el in VideoCard.objects.all(): config[el] = 0
             for el in vcl: 
-                config[VideoCard.objects.all()[int(el.get_query(request.POST, "cards"))]] += int(el.get_query(request.POST, "quantity"))
+                config[VideoCard.objects.all()[int(el.get_query(request.POST, "cards"))]] += ceil(float(el.get_query(request.POST, "quantity")))
 
             raw_profit = calc_config_profit(config, data["elec"])
             raw_duals_profit = calc_duals_config_profit(raw_profit, config, data["elec"])
@@ -235,7 +236,7 @@ def calc_asics_profit_page(request):
             config = dict()
             for el in Asics.objects.all(): config[el] = 0
             for el in vcl:
-                config[Asics.objects.all()[int(el.get_query(request.POST, "cards"))]] += int(el.get_query(request.POST, "quantity"))
+                config[Asics.objects.all()[int(el.get_query(request.POST, "cards"))]] += ceil(float(el.get_query(request.POST, "quantity")))
 
             raw_profit = calc_asics_config_profit(config, data["elec"])
             data["raw"] = raw_profit
