@@ -19,6 +19,7 @@ class test1(TestCase):
         CryptoCoin.objects.create(name="Conflux", hashrate_no_code="CFX")
         ret = calc_config_profit(self.config, self.data["elec"])
         tbl = make_table_vc(self.data, ret)
+        
         self.assertTrue(abs(float(tbl[0]["hsh"].split()[0]) / (579.2) - 1) < 0.01)
         self.assertTrue(abs(float(tbl[0]["pwr_cons"].split()[0]) / (140 * 10 * 24 / 1000) - 1) < 0.05)
 
@@ -37,10 +38,10 @@ class test2(TestCase):
         CryptoCoin.objects.create(name="Ethereum Classic", hashrate_no_code="ETC")
         ret = calc_asics_config_profit(self.config, self.data["elec"])
         tbl = make_table_asics(self.data, ret)
-        # print(tbl['JASMINER X16-Q'][0])
+        
         self.assertTrue(abs(float(tbl['JASMINER X16-Q'][0]['hsh'].split()[0]) / (1.95 * 10) - 1) < 0.01)
         self.assertTrue(abs(float(tbl['JASMINER X16-Q'][0]['pwr_cons'].split()[0]) / (15.1 * 10) - 1) < 0.01)
-        # self.assertTrue(abs(float(tbl[0]["pwr_cons"].split()[0]) / (140 * 10 * 24 / 1000) - 1) < 0.05)
+        
 
 
 
