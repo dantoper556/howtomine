@@ -3,7 +3,7 @@ body {
     background-color: #0a0a0a;
     color: white;
     font-family: 'Fira Code';
-    font-size: small;
+    font-size: clamp(1rem, 2vw, 1.5rem);
 }
 
 #mp_header {
@@ -13,55 +13,56 @@ body {
 }
 
 .mp_main_cont {
-    /* size and grid settings */
     width: 100%;
-    display:grid;
-    /* grid-template-areas: 
-        "1 2"
-    ; */
-    grid-template-columns: 70% 1fr;
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+@media only screen and (min-width: 769px) {
+    .mp_main_cont {
+        grid-template-columns: 70% 1fr;
+    }
 }
 
 .mp_sect1 {
-    /* size and grid settings */
-    /* grid-area: 1; */
-    /* width: 100%; */
-    display:grid;
-    grid-template-areas: 
+    display: grid;
+    grid-template-areas:
         "A B"
         "C D"
     ;
 }
 
-#c1 {grid-area: A;}
-#c2 {grid-area: B;}
-#c3 {grid-area: C;}
-#c4 {grid-area: D;}
-#c5 {grid-area: E;}
+#c1 {
+    grid-area: A;
+}
 
-/* a {
-    display: block;
-} */
+#c2 {
+    grid-area: B;
+}
 
-.mp_a {    
-    /* size settings */
+#c3 {
+    grid-area: C;
+}
+
+#c4 {
+    grid-area: D;
+}
+
+#c5 {
+    grid-area: E;
+}
+
+.mp_a {
     display: block;
     width: auto;
     height: 15vw;
     margin: 10px;
     padding: 20px;
-
-
-    /* block style settings */
-    /* box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7); */
 }
 
 .a1 {
-    /* color scheme */
     border-radius: 5px;
     background-color: #333333;
-
-    /* text settings */
     color: white;
     text-align: center;
     text-decoration: none;
@@ -69,12 +70,8 @@ body {
 }
 
 .a1:hover {
-    /* text settings */
     color: #073b4c;
     background-color: white;
-    /* block style settings */
-    /* box-shadow: 0px 0px 5px rgba(255, 255, 255, 0.5); */
-    
     transition: .3s;
 }
 
@@ -91,6 +88,7 @@ body {
     display: block;
     margin-bottom: 10px;
 }
+
 label {
     margin: 0px;
 }
@@ -117,7 +115,6 @@ input {
     margin: 10px;
     padding: 10px 20px 10px 20px;
     margin-left: 2%;
-    /* background-color: #333333; */
 }
 
 button {
@@ -137,7 +134,8 @@ button {
     transition: .3s;
 }
 
-select, option {
+select,
+option {
     padding: 10px;
     min-width: fit-content;
     width: 30%;
@@ -186,18 +184,22 @@ option:hover {
 .profit_tbl {
     margin-left: 2%;
     margin-right: 2%;
-    /* border: 3px solid #cccccc; */
     background-color: #333333;
 }
 
 .profit_tbl_row {
     display: grid;
-    grid-template-columns: 0.6fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr;
     border: 0.01px solid #0a0a0a;
 }
 
+@media only screen and (min-width: 769px) {
+    .profit_tbl_row {
+        grid-template-columns: 0.6fr 1fr 1fr 1fr 1fr 1fr;
+    }
+}
+
 .profit_tbl_col {
-    /* text-align: center; */
     padding-left: 10px;
     padding-top: 10px;
     padding-bottom: 10px;
@@ -206,7 +208,7 @@ option:hover {
 
 #mulcol {
     display: grid;
-    grid-template-areas: 
+    grid-template-areas:
         "A B"
         "C D"
     ;
@@ -234,26 +236,36 @@ option:hover {
     width: 15vw;
     height: 85%;
     background-color: #1e1e1e;
-    font-size: 15px;
+    font-size: clamp(1rem, 2vw, 1.5rem);
     border: 1px solid #ccc;
     align-items: center;
     padding: 2vw;
     text-align: center;
     margin: 1vw;
-    /* display: flex; */
 }
 
 #shops_list {
     width: 100%;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    /* display: grid; */
+    grid-template-columns: 1fr;
+}
+
+@media only screen and (min-width: 769px) {
+    #shops_list {
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
 }
 
 #diver {
     width: 100%;
     display: grid;
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: 1fr;
+}
+
+@media only screen and (min-width: 769px) {
+    #diver {
+        grid-template-columns: 2fr 1fr;
+    }
 }
 
 #params {
