@@ -1,11 +1,15 @@
 {% load static %}
 
 <!DOCTYPE html>
+
 <head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
     <!-- <link rel="stylesheet", href="{% static 'project_base.css' %}">
     <link rel="stylesheet", href="{% static 'calc_profit_page.css' %}"> -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
+        integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.0.272/jspdf.debug.js"></script>
@@ -23,292 +27,292 @@
 
     <style>
         body {
-padding: 40px;
-background-color: #0a0a0a;
-color: white;
-font-family: 'Fira Code';
-font-size: clamp(1rem, 2vw, 1.5rem);
-}
+            padding: 40px;
+            background-color: #0a0a0a;
+            color: white;
+            font-family: 'Fira Code';
+            font-size: clamp(0.6rem, 1.2vw, 1.0rem);
+        }
 
-#mp_header {
-padding-left: 2%;
-margin-top: 2%;
-margin-bottom: 1.8%;
-}
+        #mp_header {
+            padding-left: 2%;
+            margin-top: 2%;
+            margin-bottom: 1.8%;
+        }
 
-.mp_main_cont {
-width: 100%;
-display: grid;
-grid-template-columns: 1fr;
-}
+        .mp_main_cont {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr;
+        }
 
-@media only screen and (min-width: 769px) {
-.mp_main_cont {
-    grid-template-columns: 70% 1fr;
-}
-}
+        @media only screen and (min-width: 769px) {
+            .mp_main_cont {
+                grid-template-columns: 70% 1fr;
+            }
+        }
 
-.mp_sect1 {
-display: grid;
-grid-template-areas:
-    "A B"
-    "C D"
-;
-}
+        .mp_sect1 {
+            display: grid;
+            grid-template-areas:
+                "A B"
+                "C D"
+            ;
+        }
 
-#c1 {
-grid-area: A;
-}
+        #c1 {
+            grid-area: A;
+        }
 
-#c2 {
-grid-area: B;
-}
+        #c2 {
+            grid-area: B;
+        }
 
-#c3 {
-grid-area: C;
-}
+        #c3 {
+            grid-area: C;
+        }
 
-#c4 {
-grid-area: D;
-}
+        #c4 {
+            grid-area: D;
+        }
 
-#c5 {
-grid-area: E;
-}
+        #c5 {
+            grid-area: E;
+        }
 
-.mp_a {
-display: block;
-width: auto;
-height: 15vw;
-margin: 10px;
-padding: 20px;
-}
+        .mp_a {
+            display: block;
+            width: auto;
+            height: 15vw;
+            margin: 10px;
+            padding: 20px;
+        }
 
-.a1 {
-border-radius: 5px;
-background-color: #333333;
-color: white;
-text-align: center;
-text-decoration: none;
-transition: .3s;
-}
+        .a1 {
+            border-radius: 5px;
+            background-color: #333333;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            transition: .3s;
+        }
 
-.a1:hover {
-color: #073b4c;
-background-color: white;
-transition: .3s;
-}
+        .a1:hover {
+            color: #073b4c;
+            background-color: white;
+            transition: .3s;
+        }
 
-#mp_desc {
-padding-left: 10%;
-padding-right: 10%;
-}
+        #mp_desc {
+            padding-left: 10%;
+            padding-right: 10%;
+        }
 
-#just_text {
-padding-left: 2%;
-}
+        #just_text {
+            padding-left: 2%;
+        }
 
-#id_form-0-electricity {
-display: block;
-margin-bottom: 10px;
-}
+        #id_form-0-electricity {
+            display: block;
+            margin-bottom: 10px;
+        }
 
-label {
-margin: 0px;
-}
+        label {
+            margin: 0px;
+        }
 
-#extraforms {
-margin-bottom: 10px;
-margin-left: 2%;
-}
+        #extraforms {
+            margin-bottom: 10px;
+            margin-left: 2%;
+        }
 
-input {
-border-radius: 5px;
-border: none;
-width: fit-content;
-padding: 5px;
-margin-left: 10px;
-background-color: #474747;
-color: white;
-}
+        input {
+            border-radius: 5px;
+            border: none;
+            width: fit-content;
+            padding: 5px;
+            margin-left: 10px;
+            background-color: #474747;
+            color: white;
+        }
 
-#back_btn {
-width: fit-content;
-display: block;
-height: auto;
-margin: 10px;
-padding: 10px 20px 10px 20px;
-margin-left: 2%;
-}
+        #back_btn {
+            width: fit-content;
+            display: block;
+            height: auto;
+            margin: 10px;
+            padding: 10px 20px 10px 20px;
+            margin-left: 2%;
+        }
 
-button {
-text-align: center;
-vertical-align: middle;
-}
+        button {
+            text-align: center;
+            vertical-align: middle;
+        }
 
-#del_card_btn {
-background-color: transparent;
-border: none;
-color: white;
-transition: .3s;
-}
+        #del_card_btn {
+            background-color: transparent;
+            border: none;
+            color: white;
+            transition: .3s;
+        }
 
-#del_card_btn:hover {
-color: red;
-transition: .3s;
-}
+        #del_card_btn:hover {
+            color: red;
+            transition: .3s;
+        }
 
-select,
-option {
-padding: 10px;
-min-width: fit-content;
-width: 30%;
-background-color: #333333;
-border-radius: 5px;
-color: white;
-border: none;
-transition: 0.3s;
-}
+        select,
+        option {
+            padding: 10px;
+            min-width: fit-content;
+            width: 30%;
+            background-color: #333333;
+            border-radius: 5px;
+            color: white;
+            border: none;
+            transition: 0.3s;
+        }
 
-option:hover {
-color: #073b4c;
-background-color: #cccccc;
-transition: 0.3s;
-}
+        option:hover {
+            color: #073b4c;
+            background-color: #cccccc;
+            transition: 0.3s;
+        }
 
-.forms {
-margin-top: 30px;
-}
+        .forms {
+            margin-top: 30px;
+        }
 
-.form {
-margin-bottom: 10px;
-margin-left: 2%;
-}
+        .form {
+            margin-bottom: 10px;
+            margin-left: 2%;
+        }
 
-.trans_btn {
-margin: 10px;
-margin-top: 0px;
-margin-bottom: 20px;
-margin-left: 2%;
-border: none;
-background-color: transparent;
-color: white;
-transition: .3s;
-}
+        .trans_btn {
+            margin: 10px;
+            margin-top: 0px;
+            margin-bottom: 20px;
+            margin-left: 2%;
+            border: none;
+            background-color: transparent;
+            color: white;
+            transition: .3s;
+        }
 
-.trans_btn:hover {
-color: lightgreen;
-transition: .3s;
-}
+        .trans_btn:hover {
+            color: lightgreen;
+            transition: .3s;
+        }
 
-#tbl_head {
-font-weight: bold;
-}
+        #tbl_head {
+            font-weight: bold;
+        }
 
-.profit_tbl {
-margin-left: 2%;
-margin-right: 2%;
-background-color: #333333;
-}
+        .profit_tbl {
+            margin-left: 2%;
+            margin-right: 2%;
+            background-color: #333333;
+        }
 
-.profit_tbl_row {
-display: grid;
-grid-template-columns: 1fr;
-border: 0.01px solid #0a0a0a;
-}
+        .profit_tbl_row {
+            display: grid;
+            grid-template-columns: 1fr;
+            border: 0.01px solid #0a0a0a;
+        }
 
-@media only screen and (min-width: 769px) {
-.profit_tbl_row {
-    grid-template-columns: 0.6fr 1fr 1fr 1fr 1fr 1fr;
-}
-}
+        @media only screen and (min-width: 769px) {
+            .profit_tbl_row {
+                grid-template-columns: 0.6fr 1fr 1fr 1fr 1fr 1fr;
+            }
+        }
 
-.profit_tbl_col {
-padding-left: 10px;
-padding-top: 10px;
-padding-bottom: 10px;
-border: 0.05px solid #0a0a0a;
-}
+        .profit_tbl_col {
+            padding-left: 10px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            border: 0.05px solid #0a0a0a;
+        }
 
-#mulcol {
-display: grid;
-grid-template-areas:
-    "A B"
-    "C D"
-;
-}
+        #mulcol {
+            display: grid;
+            grid-template-areas:
+                "A B"
+                "C D"
+            ;
+        }
 
-.beautiful_btn {
-width: fit-content;
-margin-left: 2%;
-padding: 10px;
-border: none;
-border-radius: 5px;
-background-color: #333333;
-color: white;
-transition: .3s;
-text-decoration: none;
-}
+        .beautiful_btn {
+            width: fit-content;
+            margin-left: 2%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #333333;
+            color: white;
+            transition: .3s;
+            text-decoration: none;
+        }
 
-.beautiful_btn:hover {
-background-color: #cccccc;
-color: #333333;
-transition: .3s;
-}
+        .beautiful_btn:hover {
+            background-color: #cccccc;
+            color: #333333;
+            transition: .3s;
+        }
 
-.card {
-width: 15vw;
-height: 85%;
-background-color: #1e1e1e;
-font-size: clamp(1rem, 2vw, 1.5rem);
-border: 1px solid #ccc;
-align-items: center;
-padding: 2vw;
-text-align: center;
-margin: 1vw;
-}
+        .card {
+            width: 15vw;
+            height: 85%;
+            background-color: #1e1e1e;
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            border: 1px solid #ccc;
+            align-items: center;
+            padding: 2vw;
+            text-align: center;
+            margin: 1vw;
+        }
 
-#shops_list {
-width: 100%;
-display: grid;
-grid-template-columns: 1fr;
-}
+        #shops_list {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr;
+        }
 
-@media only screen and (min-width: 769px) {
-#shops_list {
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-}
-}
+        @media only screen and (min-width: 769px) {
+            #shops_list {
+                grid-template-columns: 1fr 1fr 1fr 1fr;
+            }
+        }
 
-#diver {
-width: 100%;
-display: grid;
-grid-template-columns: 1fr;
-}
+        #diver {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr;
+        }
 
-@media only screen and (min-width: 769px) {
-#diver {
-    grid-template-columns: 2fr 1fr;
-}
-}
+        @media only screen and (min-width: 769px) {
+            #diver {
+                grid-template-columns: 2fr 1fr;
+            }
+        }
 
-#params {
-width: 100%;
-background-color: #1e1e1e;
-height: 100%;
-padding: 1vw;
-border-radius: 2%;
-padding-left: 2vw;
-}
+        #params {
+            width: 100%;
+            background-color: #1e1e1e;
+            height: 100%;
+            padding: 1vw;
+            border-radius: 2%;
+            padding-left: 2vw;
+        }
 
-#down_pad {
-margin-bottom: 1%;
-}
+        #down_pad {
+            margin-bottom: 1%;
+        }
 
-#pdfkins {
-background-color: #0a0a0a;
-margin-bottom: 20px;
-}
+        #pdfkins {
+            background-color: #0a0a0a;
+            margin-bottom: 20px;
+        }
     </style>
 
     <script>
@@ -318,7 +322,7 @@ margin-bottom: 20px;
             add.appendChild(document.createTextNode("testik"));
             par.appendChild(add);
         }
-        
+
         function inc() {
             var inp = document.querySelector("input[name='cnt']");
             el.value = parseInt(el.value) + 1;
@@ -332,27 +336,27 @@ margin-bottom: 20px;
             inp.value = "{{elec}}";
 
             for (let i = 0; i < "{{cnt}}"; i++) {
-                var q = "input[name='form-" + String(i) +"-quantity']";
+                var q = "input[name='form-" + String(i) + "-quantity']";
                 var v = document.querySelector(q);
                 if (v.value == "") v.value = "1";
             }
         }
 
         function restore_types(i, val) {
-            var q = "select[name='form-" + String(parseInt(i) - 1) +"-cards']";
+            var q = "select[name='form-" + String(parseInt(i) - 1) + "-cards']";
             var v = document.querySelector(q);
             v.value = val;
         }
 
         function restore_quantities(i, val) {
             // alert(i);
-            var q = "input[name='form-" + String(parseInt(i) - 1) +"-quantity']";
+            var q = "input[name='form-" + String(parseInt(i) - 1) + "-quantity']";
             var v = document.querySelector(q);
             v.value = val;
         }
 
-        
-        
+
+
         function convert() {
             var element = document.getElementById('pdfkins');
             var opt = {
@@ -366,6 +370,7 @@ margin-bottom: 20px;
         }
     </script>
 </head>
+
 <body onload="on_page_init()" id="pdfkins">
     <!-- <button onclick="generatePDF()">press</button> -->
     <!-- <a onclick="this.href='data:text/html;charset=UTF-8,'+encodeURIComponent(document.documentElement.outerHTML)" href="#" download="page.html">Download</a> -->
@@ -377,16 +382,16 @@ margin-bottom: 20px;
                 <label>Цена электроэнергии, $/kWh</label>
                 <input type="number" step="0.00001" name="electricity">
             </div>
-            
+
             {% csrf_token %}
             {% for el in forms %}
-                <div class="form">
-                    {{el}}
-                    <button type="submit" name="del {{forloop.counter}}" id="del_card_btn">✕</button>
-                    
-                    <br>
-                </div>
-                
+            <div class="form">
+                {{el}}
+                <button type="submit" name="del {{forloop.counter}}" id="del_card_btn">✕</button>
+
+                <br>
+            </div>
+
             {% endfor %}
             <button name="inc" type="submit" onclick="inc()" class="trans_btn">Добавить карту</button>
             <br>
@@ -420,32 +425,32 @@ margin-bottom: 20px;
                     </div>
                 </div>
                 {% for val in profit %}
-                    <div class="profit_tbl_row">
-                        <div class="profit_tbl_col">
-                                {{val.coin}}
-                            </div>
-                            <div class="profit_tbl_col">
-                                {{val.hsh}}
-                            </div>
-                            <div class="profit_tbl_col" id="mulcol">
-                                <div id="c1">{{val.prf_coin}}</div>
-                                <div id="c3">{{val.mnh_prf_coin}}</div>
-                                <div id="c2">{{val.prf_usd}}</div>
-                                <div id="c4">{{val.mnh_prf_usd}}</div>
-                            </div>
-                            <div class="profit_tbl_col" id="mulcol">
-                                <div id="c1">{{val.pwr_cons}}</div>
-                                <div id="c3">{{val.mnh_pwr_cons}}</div>
-                                <div id="c2">{{val.pwr_cons_usd}}</div>
-                                <div id="c4">{{val.mnh_pwr_cons_usd}}</div>
-                            </div>
-                            <div class="profit_tbl_col" id="mulcol">
-                                <div id="c1">{{val.clear_prf_coin}}</div>
-                                <div id="c3">{{val.mnh_clear_prf_coin}}</div>
-                                <div id="c2">{{val.clear_prf_usd}}</div>
-                                <div id="c4">{{val.mnh_clear_prf_usd}}</div>
-                            </div>
+                <div class="profit_tbl_row">
+                    <div class="profit_tbl_col">
+                        {{val.coin}}
                     </div>
+                    <div class="profit_tbl_col">
+                        {{val.hsh}}
+                    </div>
+                    <div class="profit_tbl_col" id="mulcol">
+                        <div id="c1">{{val.prf_coin}}</div>
+                        <div id="c3">{{val.mnh_prf_coin}}</div>
+                        <div id="c2">{{val.prf_usd}}</div>
+                        <div id="c4">{{val.mnh_prf_usd}}</div>
+                    </div>
+                    <div class="profit_tbl_col" id="mulcol">
+                        <div id="c1">{{val.pwr_cons}}</div>
+                        <div id="c3">{{val.mnh_pwr_cons}}</div>
+                        <div id="c2">{{val.pwr_cons_usd}}</div>
+                        <div id="c4">{{val.mnh_pwr_cons_usd}}</div>
+                    </div>
+                    <div class="profit_tbl_col" id="mulcol">
+                        <div id="c1">{{val.clear_prf_coin}}</div>
+                        <div id="c3">{{val.mnh_clear_prf_coin}}</div>
+                        <div id="c2">{{val.clear_prf_usd}}</div>
+                        <div id="c4">{{val.mnh_clear_prf_usd}}</div>
+                    </div>
+                </div>
                 {% endfor %}
             </div>
             <!-- <br> -->
@@ -472,72 +477,75 @@ margin-bottom: 20px;
                     </div>
                 </div>
                 {% for val in duals %}
-                    <div class="profit_tbl_row">
-                        <div class="profit_tbl_col">
-                            {{val.par}}
-                        </div>
-                        <div class="profit_tbl_col" id="mulcol">
-                            <div id="c1">{{val.name.0}}:</div>
-                            <div id="c3">{{val.name.1}}:</div>
-                            <div id="c2">{{val.par_spl.0}} Mh/s</div>
-                            <div id="c4">{{val.par_spl.1}} Mh/s</div>
-                        </div>
-                        <div class="profit_tbl_col" id="mulcol">
-                            <div id="c1">В день:</div>
-                            <div id="c3">В месяц:</div>
-                            <div id="c2">{{val.prf_usd}} $</div>
-                            <div id="c4">{{val.mnh_prf_usd}} $</div>
-                        </div>
-                        <div class="profit_tbl_col" id="mulcol">
-                            <div id="c1">{{val.pwr_cons}} kWh</div>
-                            <div id="c3">{{val.mnh_pwr_cons}} kWh</div>
-                            <div id="c2">{{val.pwr_cons_usd}} $</div>
-                            <div id="c4">{{val.mnh_pwr_cons_usd}} $</div>
-                        </div>
-                        <div class="profit_tbl_col" id="mulcol">
-                            <div id="c1">В день:</div>
-                            <div id="c3">В месяц:</div>
-                            <div id="c2">{{val.clear_prf_usd}} $</div>
-                            <div id="c4">{{val.mnh_clear_prf_usd}} $</div>
-                        </div>
-                        <div class="profit_tbl_col" id="mulcol">
-                            <div id="c1">dual intensity</div>
-                            <div id="c3"></div>
-                            <div id="c2">{{val.di}}</div>
-                            <div id="c4"></div>
-                        </div>
+                <div class="profit_tbl_row">
+                    <div class="profit_tbl_col">
+                        {{val.par}}
                     </div>
+                    <div class="profit_tbl_col" id="mulcol">
+                        <div id="c1">{{val.name.0}}:</div>
+                        <div id="c3">{{val.name.1}}:</div>
+                        <div id="c2">{{val.par_spl.0}} Mh/s</div>
+                        <div id="c4">{{val.par_spl.1}} Mh/s</div>
+                    </div>
+                    <div class="profit_tbl_col" id="mulcol">
+                        <div id="c1">В день:</div>
+                        <div id="c3">В месяц:</div>
+                        <div id="c2">{{val.prf_usd}} $</div>
+                        <div id="c4">{{val.mnh_prf_usd}} $</div>
+                    </div>
+                    <div class="profit_tbl_col" id="mulcol">
+                        <div id="c1">{{val.pwr_cons}} kWh</div>
+                        <div id="c3">{{val.mnh_pwr_cons}} kWh</div>
+                        <div id="c2">{{val.pwr_cons_usd}} $</div>
+                        <div id="c4">{{val.mnh_pwr_cons_usd}} $</div>
+                    </div>
+                    <div class="profit_tbl_col" id="mulcol">
+                        <div id="c1">В день:</div>
+                        <div id="c3">В месяц:</div>
+                        <div id="c2">{{val.clear_prf_usd}} $</div>
+                        <div id="c4">{{val.mnh_clear_prf_usd}} $</div>
+                    </div>
+                    <div class="profit_tbl_col" id="mulcol">
+                        <div id="c1">dual intensity</div>
+                        <div id="c3"></div>
+                        <div id="c2">{{val.di}}</div>
+                        <div id="c4"></div>
+                    </div>
+                </div>
                 {% endfor %}
             </div>
 
             <h2 id="mp_header">Рентабельность</h2>
             {% if exists == 1 %}
-                {% for item in prices.items %}
-                    <div id="just_text"><strong>{{item.0}}</strong> : от {{item.1.0}} $ <a class="beautiful_btn" href="{{item.1.1}}" target="_blank">Купить</a></div>
-                    <br>
-                {% endfor %}
-                <br>
-                <div id="just_text"><strong>Суммарная стоимость конфигурации карт</strong> : {{total_price}} $</div>
-                {% if payback == -1 %}
-                    <div id="just_text"><strong>Ожидаемый срок окупаемости</strong> : конфигурация никогда не окупится </div>
-                {% else %}
-                    <div id="just_text"><strong>Ожидаемый срок окупаемости</strong> : {{payback}} дней</div>
-                {% endif %}
-            
+            {% for item in prices.items %}
+            <div id="just_text"><strong>{{item.0}}</strong> : от {{item.1.0}} $ <a class="beautiful_btn"
+                    href="{{item.1.1}}" target="_blank">Купить</a></div>
+            <br>
+            {% endfor %}
+            <br>
+            <div id="just_text"><strong>Суммарная стоимость конфигурации карт</strong> : {{total_price}} $</div>
+            {% if payback == -1 %}
+            <div id="just_text"><strong>Ожидаемый срок окупаемости</strong> : конфигурация никогда не окупится </div>
             {% else %}
-                <h5 id="mp_header">В данный момент такую конфигурацию собрать не получится :((</h5>
+            <div id="just_text"><strong>Ожидаемый срок окупаемости</strong> : {{payback}} дней</div>
+            {% endif %}
+
+            {% else %}
+            <h5 id="mp_header">В данный момент такую конфигурацию собрать не получится :((</h5>
             {% endif %}
 
             <br>
             <!-- <button onclick="convert()" class="beautiful_btn">Сохранить как pdf</button> -->
-            <a class="beautiful_btn" onclick="this.href='data:text/html;charset=UTF-8,'+encodeURIComponent(document.documentElement.outerHTML)" href="#" download="page.html">Сохранить как html</a>
+            <a class="beautiful_btn"
+                onclick="this.href='data:text/html;charset=UTF-8,'+encodeURIComponent(document.documentElement.outerHTML)"
+                href="#" download="page.html">Сохранить как html</a>
         </div>
 
         {% for type in form_vals %}
-            <script>restore_types("{{forloop.counter}}", "{{type}}")</script>
+        <script>restore_types("{{forloop.counter}}", "{{type}}")</script>
         {% endfor %}
         {% for quant in form_quant %}
-            <script>restore_quantities("{{forloop.counter}}", "{{quant}}")</script>
+        <script>restore_quantities("{{forloop.counter}}", "{{quant}}")</script>
         {% endfor %}
     </div>
 </body>

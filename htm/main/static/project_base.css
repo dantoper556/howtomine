@@ -3,7 +3,7 @@ body {
     background-color: #0a0a0a;
     color: white;
     font-family: 'Fira Code';
-    font-size: clamp(1rem, 2vw, 1.5rem);
+    font-size: clamp(0.6rem, 1.2vw, 1.0rem);
 }
 
 #mp_header {
