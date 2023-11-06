@@ -2,6 +2,7 @@ from django.test import TestCase
 from .calculators import calc_config_profit, calc_asics_config_profit
 from .models import *
 from .presenters import make_table_vc, make_table_asics
+import json
 
 class test1(TestCase):
     def setUp(self) -> None:
@@ -41,6 +42,16 @@ class test2(TestCase):
         
         self.assertTrue(abs(float(tbl['JASMINER X16-Q'][0]['hsh'].split()[0]) / (1.95 * 10) - 1) < 0.01)
         self.assertTrue(abs(float(tbl['JASMINER X16-Q'][0]['pwr_cons'].split()[0]) / (15.1 * 10) - 1) < 0.01)
+
+
+class test3(TestCase):
+    def setUp(self) -> None:
+        pass
+
+    def test(self):
+        f1 = open("./main/jsons/coins.json")
+        dat = json.load(f1)
+        self.assertTrue(abs(dat["parsed"]["Conflux"]["usd_per_coin"] - 0.16756) < 0.001)
         
 
 
