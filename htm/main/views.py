@@ -28,9 +28,18 @@ def make_conf_page(request):
     cards, exist = make_offer(config)
     # получение данных от пользователя
     if (request.method == "POST"):
-        data["elec"] = float(request.POST["electricity"])
-        data["budget"] = float(request.POST["budget"])
-        data["cnt"] = int(request.POST["cnt"])
+        try:
+            data["elec"] = float(request.POST["electricity"])
+        except ValueError:
+            data["elec"] = 0
+        try:
+            data["budget"] = float(request.POST["budget"])
+        except ValueError:
+            data["budget"] = 0
+        try:
+            data["cnt"] = int(request.POST["cnt"])
+        except ValueError:
+            data["cnt"] = 0
 
     # состовляем список из карт со значением отношения доходности к цене
     vals = dict()
@@ -138,7 +147,10 @@ def calc_profit_page(request):
     if (request.method == "POST"):
         # считывем форму
         data["cnt"] = int(request.POST['form-0-cnt'])
-        data["elec"] = float(request.POST['electricity'])
+        try:
+            data["elec"] = float(request.POST['electricity'])
+        except ValueError:
+            data["elec"] = 0
         sz = data["cnt"]
         vcl = []
         for i in range(sz): vcl.append(VCParser(i))
@@ -164,7 +176,10 @@ def calc_profit_page(request):
             config = dict()
             for el in VideoCard.objects.all(): config[el] = 0
             for el in vcl: 
-                config[VideoCard.objects.all()[int(el.get_query(request.POST, "cards"))]] += ceil(float(el.get_query(request.POST, "quantity")))
+                try:
+                    config[VideoCard.objects.all()[int(el.get_query(request.POST, "cards"))]] += ceil(float(el.get_query(request.POST, "quantity")))
+                except ValueError:
+                    config[VideoCard.objects.all()[int(el.get_query(request.POST, "cards"))]] += 1
 
             # считаем профит
             raw_profit = calc_config_profit(config, data["elec"])
@@ -234,7 +249,10 @@ def calc_asics_profit_page(request):
     if (request.method == "POST"):
         # считываем форму
         data["cnt"] = int(request.POST['form-0-cnt'])
-        data["elec"] = float(request.POST['electricity'])
+        try:
+            data["elec"] = float(request.POST['electricity'])
+        except ValueError:
+            data["elec"] = 0
         sz = data["cnt"]
         vcl = []
         for i in range(sz): vcl.append(VCParser(i))
@@ -256,7 +274,10 @@ def calc_asics_profit_page(request):
             config = dict()
             for el in Asics.objects.all(): config[el] = 0
             for el in vcl:
-                config[Asics.objects.all()[int(el.get_query(request.POST, "cards"))]] += ceil(float(el.get_query(request.POST, "quantity")))
+                try:
+                    config[Asics.objects.all()[int(el.get_query(request.POST, "cards"))]] += ceil(float(el.get_query(request.POST, "quantity")))
+                except ValueError:
+                    config[Asics.objects.all()[int(el.get_query(request.POST, "cards"))]] += 1
 
             # заполняем мапу для вывода
             raw_profit = calc_asics_config_profit(config, data["elec"])
@@ -284,8 +305,14 @@ def present_cards(request):
     data["res"] = []
     data["sort_pars"] = ""
     if (request.method == "POST"):
-        ql = float(request.POST["minv"])
-        qr = float(request.POST["maxv"])
+        try:
+            ql = float(request.POST["minv"])
+        except ValueError:
+            ql = 0
+        try:
+            qr = float(request.POST["maxv"])
+        except ValueError:
+            qr = 1000000000
         
         # print(ql, qr)
         # фильтр по цене

@@ -236,7 +236,7 @@ option:hover {
     width: 15vw;
     height: 85%;
     background-color: #1e1e1e;
-    font-size: clamp(1rem, 2vw, 1.5rem);
+    /* font-size: clamp(1rem, 2vw, 1.5rem); */
     border: 1px solid #ccc;
     align-items: center;
     padding: 2vw;

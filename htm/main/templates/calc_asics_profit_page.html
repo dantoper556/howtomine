@@ -350,7 +350,7 @@
         <form class="forms" method="POST">
             <div id="extraforms">
                 <label>Цена электроэнергии, $/kWh</label>
-                <input type="number" step="0.00001" name="electricity">
+                <input type="number" step="0.00001" name="electricity" min="0" max="100000">
             </div>
 
             {% csrf_token %}
