@@ -110,6 +110,7 @@ def make_conf_page(request):
         else:
             data["payback"] = round(data["total_price"] / mx + 1)
 
+    data["total_price"] = round(data["total_price"], 2)
     # отправляем таблицу на html страницу
     resl = []
     for el in res.keys():
@@ -208,7 +209,7 @@ def calc_profit_page(request):
                 else:
                     data["payback"] = round(data["total_price"] / mx)
         data["total_price"] = round(data["total_price"], 2)
-        
+
         # генерируем формы 
         data["forms"].extra = data["cnt"]
         tl, tq = [], []
