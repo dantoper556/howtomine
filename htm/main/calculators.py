@@ -6,7 +6,7 @@ import time
 from bs4 import BeautifulSoup as bs
 
 def update_jsons():
-    sleep = 3600
+    sleep = 360000000
 
     # обновлние json-а с данными о криптовалютах
     f1 = open("./main/jsons/coins.json")
