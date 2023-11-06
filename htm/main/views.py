@@ -207,6 +207,7 @@ def calc_profit_page(request):
                     data["payback"] = -1
                 else:
                     data["payback"] = round(data["total_price"] / mx)
+        data["total_price"] = round(data["total_price"], 2)
         
         # генерируем формы 
         data["forms"].extra = data["cnt"]
