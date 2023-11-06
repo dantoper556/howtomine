@@ -12,12 +12,15 @@ def update_jsons():
     f1 = open("./main/jsons/coins.json")
     dat = json.load(f1)
     last_upd = dat["time"]
-
+    ok = 1
     for coin in CryptoCoin.objects.all():
         if (time.time() - last_upd > sleep or coin.name not in dat["parsed"].keys()):
             dat["parsed"][coin.name] = {}
             url = f"https://www.hashrate.no/coins/{coin.hashrate_no_code.lower()}"
             req = requests.get(url)
+            if (req.status_code != 200):
+                ok = 0
+            
             raw_text = bs(req.text, features="html.parser")
             profit_1mhs = raw_text.find_all("td", {"class", "infoFocus"})[1]
             usd_per_coin = float(raw_text.find_all("font", {"class", "infoFocus"})[0].text[1:])
@@ -25,13 +28,13 @@ def update_jsons():
             dat["parsed"][coin.name]["usd_per_coin"] = float(raw_text.find_all("font", {"class", "infoFocus"})[0].text[1:])
             dat["time"] = time.time()
     
-    json.dump(dat, open("./main/jsons/coins.json", 'w'))
+    if (ok): json.dump(dat, open("./main/jsons/coins.json", 'w'))
 
     # обновлние json-а с данными о видеокартах
     f2 = open("./main/jsons/cards.json")
     dat = json.load(f2)
     last_upd = dat["time"]
-
+    ok = 1
     for card in VideoCard.objects.all():
         if (card.name not in dat["parsed"].keys()): dat["parsed"][card.name] = {}
         for coin in CryptoCoin.objects.all():
@@ -39,6 +42,9 @@ def update_jsons():
                 dat["parsed"][card.name][coin.name] = {}
                 url = f"https://www.hashrate.no/gpus/{card.hashrate_no_code}/{coin.hashrate_no_code}"
                 req = requests.get(url)
+                if (req.status_code != 200):
+                    ok = 0
+                    break
                 raw_text = bs(req.text, features="html.parser")
                 raw_desc = raw_text.find_all("span", {"class", "description"})
                 desc = str(bs(str(raw_desc), features="html.parser").text)
@@ -59,9 +65,11 @@ def update_jsons():
                 
                 dat["time"] = time.time()
 
-    json.dump(dat, open("./main/jsons/cards.json", 'w'))
+    if (ok): json.dump(dat, open("./main/jsons/cards.json", 'w'))
 
     # обновлние json-а с данными о ценах видеокарт
+    
+    ok = 1
     f3 = open("./main/jsons/vcards.json", 'r')
     usd_rub = 100
     res = {}
@@ -70,13 +78,19 @@ def update_jsons():
     last_upd = dat["time"]
     if (time.time() - last_upd > sleep):
         pr_g = requests.get("https://exchange-rates.abstractapi.com/v1/live/?api_key=6f5477586faa4c1f9a33ecf8f1aa5f64&base=USD&target=RUB")
-        usd_rub = pr_g.json()['exchange_rates']['RUB']
-        res["usd_rub"] = usd_rub
-        
+        if (pr_g.status_code != 200):
+            ok = 0
+        else:
+            usd_rub = pr_g.json()['exchange_rates']['RUB']
+            res["usd_rub"] = usd_rub
+    
     for el in VideoCard.objects.all():
         if (time.time() - last_upd > sleep or str(el) not in dat.keys()):
             url = "https://n-katalog.ru/search?keyword=" + el.name.replace(' ', '+')
             req = requests.get(url)
+            if (req.status_code != 200):
+                ok = 0
+                break
             raw_text = bs(req.text, features="html.parser")
             price_list = raw_text.find_all("div", {"class", "model-price-range"})
             l = []
@@ -92,7 +106,7 @@ def update_jsons():
             else: res[str(el)] = "-"
             res["time"] = time.time()
             print(el)
-    json.dump(res, open("./main/jsons/vcards.json", 'w'))
+    if (ok): json.dump(res, open("./main/jsons/vcards.json", 'w'))
 
 
 def calc_config_profit(config: dict(), elec_price: float) -> dict():
