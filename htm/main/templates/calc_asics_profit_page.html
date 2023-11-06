@@ -306,12 +306,14 @@
         }
 
         function inc() {
+            // добавляем поле
             var inp = document.querySelector("input[name='cnt']");
             el.value = parseInt(el.value) + 1;
             // alert(el.value);
         }
 
         function on_page_init() {
+            // генерируем формы и заполняем значения
             var inp = document.querySelector("input[name='form-0-cnt']");
             inp.value = "{{cnt}}";
             inp = document.querySelector("input[name='electricity']");
@@ -325,12 +327,14 @@
         }
 
         function restore_types(i, val) {
+            // восстанавливаем значения полей с выбором
             var q = "select[name='form-" + String(parseInt(i) - 1) + "-cards']";
             var v = document.querySelector(q);
             v.value = val;
         }
 
         function restore_quantities(i, val) {
+            // восстанавливаем значения полей с количеством
             // alert(i);
             var q = "input[name='form-" + String(parseInt(i) - 1) + "-quantity']";
             var v = document.querySelector(q);

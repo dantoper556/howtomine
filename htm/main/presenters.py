@@ -1,4 +1,5 @@
 def make_table_vc(data: dict, raw_profit: dict) -> dict:
+    # создание мапа для отображения таблицы на странице
     profit = []
     for coin, val in raw_profit.items():
         if (val[0] == 0): continue
@@ -23,6 +24,7 @@ def make_table_vc(data: dict, raw_profit: dict) -> dict:
     return profit
 
 def make_duals_table(raw_duals_profit, data):
+    # создание мапа для отображения таблицы на странице
     duals = []
     for key, val in raw_duals_profit.items():
         duals.append({
@@ -43,6 +45,7 @@ def make_duals_table(raw_duals_profit, data):
     return duals
 
 def make_table_asics(data: dict(), raw_profit: dict()):
+    # создание мапа для отображения таблицы на странице
     profit = dict()
     total = {
         "prf_usd": 0,
@@ -73,7 +76,7 @@ def make_table_asics(data: dict(), raw_profit: dict()):
         total["prf_usd"] += float(profit[m.name][0]["prf_usd"].split()[0])
         total["pwr_cons_usd"] += float(profit[m.name][0]["pwr_cons_usd"].split()[0])
         total["pwr_cons"] += float(profit[m.name][0]["pwr_cons"].split()[0])
-        total["clear_prf_usd"] += float(profit[m.name][0]["clear_prf_usd"].split()[0])\
+        total["clear_prf_usd"] += float(profit[m.name][0]["clear_prf_usd"].split()[0])
 
     profit["Суммарная доходность конфигурации"] = [{
         "coin": "-",

@@ -21,16 +21,18 @@ def make_conf_page(request):
     data["budget"] = 1000.0
     data["cnt"] = 0
 
+    # список всех карт
     config = {}
     for el in VideoCard.objects.all():
         config[el] = 1
     cards, exist = make_offer(config)
+    # получение данных от пользователя
     if (request.method == "POST"):
         data["elec"] = float(request.POST["electricity"])
         data["budget"] = float(request.POST["budget"])
         data["cnt"] = int(request.POST["cnt"])
-    
-    # print(":", cards)
+
+    # состовляем список из карт со значением отношения доходности к цене
     vals = dict()
     srt_l = []
     for el in cards.keys():
@@ -45,6 +47,7 @@ def make_conf_page(request):
     if (cnt == 0):
         cnt = 1e9
 
+    # првоеряем, есть ли хотя бы одна доходная конфигурация
     data["cards"] = cards
     srt_l.sort(reverse=True)
     print(srt_l)
@@ -53,6 +56,7 @@ def make_conf_page(request):
     res = dict()
     for el in VideoCard.objects.all():
         res[el] = 0
+    # сначала набираем много самых выгодных карт
     res[srt_l[0][1]] = min(cnt, data["budget"] // vals[srt_l[0][1]][1])
     rcnt = res[srt_l[0][1]]
     left = data["budget"] - rcnt * vals[srt_l[0][1]][1]
@@ -67,6 +71,7 @@ def make_conf_page(request):
                             res[nw] += 1
                             ok = 1
                             left += cards[el][0] - cards[nw][0]
+                            # если можем улучшить ответ заменой какой-то карты на другую - улучшаем
         if (ok == 0):
             break
     
@@ -80,6 +85,7 @@ def make_conf_page(request):
     data["exists"] = exist
     data["prices"] = raw_offer
     # print(exist)
+    # окупаемость и общая цена
     if (exist):
         for card in res.keys():
             if (res[card] > 0):
@@ -95,6 +101,7 @@ def make_conf_page(request):
         else:
             data["payback"] = round(data["total_price"] / mx + 1)
 
+    # отправляем таблицу на html страницу
     resl = []
     for el in res.keys():
         if (res[el] > 0):
@@ -129,6 +136,7 @@ def calc_profit_page(request):
     data["profit"] = []
     
     if (request.method == "POST"):
+        # считывем форму
         data["cnt"] = int(request.POST['form-0-cnt'])
         data["elec"] = float(request.POST['electricity'])
         sz = data["cnt"]
@@ -137,9 +145,11 @@ def calc_profit_page(request):
 
         flag = 0
         if ("inc" in request.POST):
+            # добавление поля к форме
             data["cnt"] += 1
             flag = 1
         elif (sum([el.count("del") for el in request.POST.keys()]) > 0):
+            # удаление поля из формы
             if (int(request.POST['form-0-cnt']) > 1):
                 data["cnt"] -= 1
 
@@ -149,20 +159,25 @@ def calc_profit_page(request):
                         vcl.pop(int(s[1]) - 1)
             flag = 2
         elif ("sbm" in request.POST):
+            # подсчет прибыли
+            # считываем конфигурацию
             config = dict()
             for el in VideoCard.objects.all(): config[el] = 0
             for el in vcl: 
                 config[VideoCard.objects.all()[int(el.get_query(request.POST, "cards"))]] += ceil(float(el.get_query(request.POST, "quantity")))
 
+            # считаем профит
             raw_profit = calc_config_profit(config, data["elec"])
             raw_duals_profit = calc_duals_config_profit(raw_profit, config, data["elec"])
             raw_offer, exist = make_offer(config)
+            # заполняем мапу для вывода
             data["exists"] = exist
             data["prices"] = raw_offer
             data["profit"] = make_table_vc(data, raw_profit)
             data["duals"] = make_duals_table(raw_duals_profit, data)
             data["total_price"] = 0
             data["payback"] = 0
+            # общая цена и окупаемость
             if (exist):
                 for card in config.keys():
                     if (config[card] > 0):
@@ -178,6 +193,7 @@ def calc_profit_page(request):
                 else:
                     data["payback"] = round(data["total_price"] / mx)
         
+        # генерируем формы 
         data["forms"].extra = data["cnt"]
         tl, tq = [], []
         for el in vcl: 
@@ -216,6 +232,7 @@ def calc_asics_profit_page(request):
     data["profit"] = dict()
 
     if (request.method == "POST"):
+        # считываем форму
         data["cnt"] = int(request.POST['form-0-cnt'])
         data["elec"] = float(request.POST['electricity'])
         sz = data["cnt"]
@@ -223,8 +240,10 @@ def calc_asics_profit_page(request):
         for i in range(sz): vcl.append(VCParser(i))
 
         if ("inc" in request.POST):
+            # добавление поля
             data["cnt"] += 1
         elif (sum([el.count("del") for el in request.POST.keys()]) > 0):
+            # удаление поля
             if (int(request.POST['form-0-cnt']) > 1):
                 data["cnt"] -= 1
 
@@ -233,15 +252,18 @@ def calc_asics_profit_page(request):
                         s = el.split(' ')
                         vcl.pop(int(s[1]) - 1)
         elif ("sbm" in request.POST):
+            # подсчет прибыли
             config = dict()
             for el in Asics.objects.all(): config[el] = 0
             for el in vcl:
                 config[Asics.objects.all()[int(el.get_query(request.POST, "cards"))]] += ceil(float(el.get_query(request.POST, "quantity")))
 
+            # заполняем мапу для вывода
             raw_profit = calc_asics_config_profit(config, data["elec"])
             data["raw"] = raw_profit
             data["profit"] = make_table_asics(data, raw_profit)
         
+        # генерируем формы
         data["forms"].extra = data["cnt"]
         tl, tq = [], []
         for el in vcl: 
@@ -266,10 +288,12 @@ def present_cards(request):
         qr = float(request.POST["maxv"])
         
         # print(ql, qr)
+        # фильтр по цене
         for k in data["vcards_list"].keys():
             if (data["vcards_list"][k][0] != '-' and ql <= data["vcards_list"][k][0] <= qr):
                 data["res"].append([k, data["vcards_list"][k]])
         data["res"].sort(key=lambda a: a[1][0])
+        # сортировки
         if ("sort" in request.POST.keys()):
             if (request.POST["sort"] == "sort1"):
                 data["res"].sort(key=lambda a: a[1][0])
@@ -279,7 +303,8 @@ def present_cards(request):
                 data["sort_pars"] += "Сортровать по убыванию цены, "
         data["sort_pars"] += f"от {ql} $ до {qr} $"
         print(request.POST)
-    else: 
+    else:
+        # при первом открытии страницы добавляем все
         for k in data["vcards_list"].keys():
             data["res"].append([k, data["vcards_list"][k]])
     return render(request, 'present_all.html', context=data)

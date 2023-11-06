@@ -300,6 +300,7 @@
     </style>
     <script>
         function on_page_init() {
+            // восстанавливаем значения форм
             var inp = document.querySelector("input[name='electricity']");
             inp.value = "{{elec}}";
             inp = document.querySelector("input[name='budget']");

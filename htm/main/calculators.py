@@ -134,7 +134,9 @@ def calc_duals_config_profit(solos: dict(), config: dict(), elec_price: float) -
             t = first
             first = second
             second = t
-
+        
+        # 0 - сокращения монет, 1 - профит пары, 2 - dual intensity
+        # 3 - обьекты монет из пары, 4 - потребление электроэнергии
         profit[pair] = [
             [solos[first][0], solos[second][0] / 2],
             solos[first][2] + solos[second][2] / 2,
@@ -204,6 +206,8 @@ def calc_asics_config_profit(config: dict(), elec_price: float) -> dict():
 
 
 def make_offer(config) -> dict():
+    # подсчет стоимости каждой карты из конфигурации
+    # [карта] = (стоимость, ссылка на nkatalog)
     update_jsons()
 
     res = dict()
